@@ -1,0 +1,26 @@
+<script type="text/javascript">
+    RED.nodes.registerType('arrowhead', {
+        category: 'function',
+        color: '#004575',
+        defaults: {
+            name: {value: ""}
+        },
+        inputs: 1,
+        outputs: 1,
+        icon: 'icons/arrowhead_logo_blue.svg',
+        label: function() {
+            return this.name||"arrowhead";
+        }
+    });
+</script>
+
+<script type="text/html" data-template-name="arrowhead">
+    <div class="form-row">
+        <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+        <input type="text" id="node-input-name" placeholder="Name">
+    </div>
+</script>
+
+<script type="text/html" data-help-name="arrowhead">
+    <p>A node to work with arrowhead framework.</p>
+</script>
