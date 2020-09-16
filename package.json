@@ -17,7 +17,9 @@
   "homepage": "https://github.com/draperez/node-red-contrib-arrowhead#readme",
   "node-red" : {
     "nodes": {
-      "arrowhead": "arrowhead.js"
+      "ah_system": "ah_system.js",
+      "ah_service": "ah_service.js",
+      "ah_service_registry": "ah_service_registry.js"
     }
   }
 }

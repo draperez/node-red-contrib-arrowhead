@@ -1,0 +1,36 @@
+<script type="text/javascript">
+  RED.nodes.registerType('ah_service_registry', {
+    category: 'config',
+    color: '#d1eae7',
+    defaults: {
+      host: { value: "http://172.17.99.7", required:true },
+      port: { value: 8443, validate:RED.validators.number() },
+      path: { value: '/serviceregistry'}
+    },
+    label: function () {
+      var label = this.host;
+      if(this.port) label += ':'+this.port
+      if(this.path) label += this.path
+      return label;
+    }
+  });
+</script>
+
+<script type="text/html" data-template-name="ah_service_registry">
+    <div class="form-row">
+        <label for="node-config-input-host"><i class="fa fa-server"></i> Service Registry Host</label>
+        <input type="text" id="node-config-input-host" placeholder="e.g.: localhost, https://example.com...">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-port"><i class="fa fa-sitemap"></i> Service Registry Port</label>
+        <input type="number" id="node-config-input-port" placeholder="e.g.: 80, 443...">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-path"><i class="fa fa-bookmark"></i> Service Registry Path</label>
+        <input type="text" id="node-config-input-path" placeholder="e.g.: /api, /v1/api, /nodered...">
+    </div>
+</script>
+
+<script type="text/html" data-help-name="ah_service_registry">
+    <p>Configuration node for Arrowhead framework Service Registry.</p>
+</script>

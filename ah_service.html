@@ -1,0 +1,72 @@
+<script type="text/javascript">
+  RED.nodes.registerType('ah_service', {
+    category: 'network',
+    color: '#d1eae7',
+    defaults: {
+      sr: { value: "", type: "ah_service_registry", required: true },
+      system: { value: "", type: "ah_system", required: true },
+      method: { value: "get", required: true },
+      uri: { value: "/ah_service", required: true },
+      definition: { value: 'NodeRed Example Service'},
+      version: { value: 0, required: true, validate: RED.validators.number() },
+      name: { value: "" },
+      replace: {value: false },
+    },
+    inputs: 0,
+    outputs: 3,
+    icon: 'icons/arrowhead_logo_blue.svg',
+    label: function () {
+      return this.name || "Arrowhead Service";
+    }
+  });
+</script>
+
+<script type="text/html" data-template-name="ah_service">
+
+  <div class="form-row">
+    <label for="node-input-sr"><i class="icon-tag"></i> Arrowhead Service Registry</label>
+    <input type="text" id="node-input-sr" placeholder="">
+  </div>
+
+  <div class="form-row">
+    <label for="node-input-system"><i class="icon-tag"></i> System</label>
+    <input type="text" id="node-input-system" placeholder="">
+  </div>
+
+  <div class="form-row">
+    <label for="node-input-method"><i class="fa fa-tasks"></i> <span data-i18n="httpin.label.method"></span></label>
+    <select type="text" id="node-input-method" style="width:70%;">
+      <option value="get">GET</option>
+      <option value="post">POST</option>
+      <option value="put">PUT</option>
+      <option value="delete">DELETE</option>
+      <option value="patch">PATCH</option>
+    </select>
+  </div>
+
+  <div class="form-row">
+    <label for="node-input-definition"><i class="fa fa-bookmark"></i> Service Definition</label>
+    <input type="text" id="node-input-definition" placeholder="Service Definition or Name."/>
+  </div>
+
+  <div class="form-row">
+    <label for="node-input-uri"><i class="fa fa-globe"></i> Service URI</label>
+    <input id="node-input-uri" type="text" placeholder="/example"/>
+  </div>
+
+  <div class="form-row">
+    <label for="node-input-version"><i class="fa fa-bookmark"></i> Version</label>
+    <input type="number" id="node-input-version" placeholder="Version of the system."/>
+  </div>
+  <div class="form-row">
+      <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+      <input type="text" id="node-input-name" placeholder="Node Name"/>
+  </div>
+  <div class="form-row">
+    <label for="node-input-replace"><i class="fa fa-sync"></i> Replace</label>
+    <input type="checkbox" id="node-input-replace" placeholder="Replace already registered service?"/>
+</script>
+
+<script type="text/html" data-help-name="ah_service">
+    <p>Creates a Service (REST endpoint) and registers to Arrowhead Framework.</p>
+</script>
