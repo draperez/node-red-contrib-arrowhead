@@ -1,0 +1,37 @@
+<script type="text/javascript">
+  RED.nodes.registerType('ah_orchestrator', {
+    category: 'config',
+    defaults: {
+      host: { value: "http://localhost", required: true },
+      port: { value: "8440", validate: RED.validators.number() },
+      path: { value: "/orchestrator", required: true },
+      name: { value: 'Arrowhead Orchestrator', required: true }
+    },
+    label: function () {
+      return this.name || "Arrowhead Orchestrator"
+    }
+  });
+</script>
+
+<script type="text/html" data-template-name="ah_orchestrator">
+  <div class="form-row">
+      <label for="node-config-input-host"><i class="fa fa-server"></i> Host</label>
+      <input type="text" id="node-config-input-address" placeholder="System Host. e.g.: http://localhost, https://172.17.1.99...">
+  </div>
+  <div class="form-row">
+      <label for="node-config-input-port"><i class="fa fa-sitemap"></i> Port</label>
+      <input type="number" id="node-config-input-port" placeholder="System port. e.g.: 80, 443...">
+  </div>
+  <div class="form-row">
+      <label for="node-config-input-path"><i class="fa fa-bookmark"></i> Path</label>
+      <input type="text" id="node-config-input-path" placeholder="Orchestrator service path.">
+  </div>
+  <div class="form-row">
+      <label for="node-config-input-name"><i class="fa fa-bookmark"></i> Name</label>
+      <input type="text" id="node-config-input-name" placeholder="System Name.">
+  </div>
+</script>
+
+<script type="text/html" data-help-name="ah_orchestrator">
+    <p>Configuration node for Arrowhead framework Orchestrator.</p>
+</script>

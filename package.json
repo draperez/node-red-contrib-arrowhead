@@ -6,6 +6,9 @@
     "type": "git",
     "url": "git+https://github.com/draperez/node-red-contrib-arrowhead.git"
   },
+  "dependencies": {
+    "axios": "0.20.0"
+  },
   "keywords": [
     "arrowhead"
   ],
@@ -18,8 +21,10 @@
   "node-red" : {
     "nodes": {
       "ah_system": "ah_system.js",
-      "ah_service": "ah_service.js",
-      "ah_service_registry": "ah_service_registry.js"
+      "ah_registry": "ah_registry.js",
+      "ah_orchestrator": "ah_orchestrator.js",
+      "ah_service_endpoint": "ah_service_endpoint.js",
+      "ah_service_consumer": "ah_service_consumer.js"
     }
   }
 }

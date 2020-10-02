@@ -2,8 +2,8 @@
   RED.nodes.registerType('ah_system', {
     category: 'config',
     defaults: {
-      address: { value: "172.17.100.40", required: true },
-      port: { value: "1880", validate: RED.validators.number() },
+      address: { value: "http://localhost", required: true },
+      port: { value: "80", validate: RED.validators.number() },
       name: { value: 'NodeRed System', required: true }
     },
     label: function () {
