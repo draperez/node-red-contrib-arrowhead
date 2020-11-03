@@ -1,39 +1,40 @@
 module.exports = function (RED) {
     const axios = require("axios");
+    //const JSON = require("JSON");
     const querystring = require('querystring');
     function ArrowheadServiceEndpointNode(config) {
         RED.nodes.createNode(this, config);
         var node = this;
-        var service_url = config.url || "/ah_service"; //or '/'+config.url???
+        var serviceURL = config.url || "/ah_service"; //or '/'+config.url???
 
         switch (config.method) {
             case "post":
-                RED.httpNode.post(service_url, function (req, res) { add_req_res_to_msg(req, res, node); });
+                RED.httpNode.post(serviceURL, function (req, res) { addReqResToMsg(req, res, node); });
                 break;
             case "put":
-                RED.httpNode.put(service_url, function (req, res) { add_req_res_to_msg(req, res, node); });
+                RED.httpNode.put(serviceURL, function (req, res) { addReqResToMsg(req, res, node); });
                 break;
             case "delete":
-                RED.httpNode.delete(service_url, function (req, res) { add_req_res_to_msg(req, res, node); });
+                RED.httpNode.delete(serviceURL, function (req, res) { addReqResToMsg(req, res, node); });
                 break;
             case "options":
-                RED.httpNode.options(service_url, function (req, res) { add_req_res_to_msg(req, res, node); });
+                RED.httpNode.options(serviceURL, function (req, res) { addReqResToMsg(req, res, node); });
                 break;
             case "patch":
-                RED.httpNode.patch(service_url, function (req, res) { add_req_res_to_msg(req, res, node); });
+                RED.httpNode.patch(serviceURL, function (req, res) { addReqResToMsg(req, res, node); });
                 break;
             default:
-                RED.httpNode.get(service_url, function (req, res) { add_req_res_to_msg(req, res, node); });
+                RED.httpNode.get(serviceURL, function (req, res) { addReqResToMsg(req, res, node); });
         }
 
         if (config.replace)
-            unregister_from_ah_service_registry(config, node);
+            unregisterFromAHServiceRegistry(config, node);
         else
-            register_in_ah_service_registry(config, node);
+            registerInAHServiceRegistry(config, node);
     }
-    RED.nodes.registerType("ah_service_endpoint", ArrowheadServiceEndpointNode);
+    RED.nodes.registerType("ah service endpoint", ArrowheadServiceEndpointNode);
 
-    function add_req_res_to_msg(req, res, node) {
+    function addReqResToMsg(req, res, node) {
         node.debug(res);
         msg = {
             _msgid: RED.util.generateId(),
@@ -44,21 +45,22 @@ module.exports = function (RED) {
             payload: null
         };
 
-        node.send([msg, null, null]);
+        //node.send([msg, null, null]);
+        node.send(msg);
     }
 
-    function register_in_ah_service_registry(config, node) {
-        var ah_system = RED.nodes.getNode(config.system);
-        var ah_service_registry = RED.nodes.getNode(config.sr);
+    function registerInAHServiceRegistry(config, node) {
+        var ahSystem = RED.nodes.getNode(config.system);
+        var ahServiceRegistry = RED.nodes.getNode(config.sr);
 
-        var registy_url = ah_service_registry.url + '/register';
-        var body = get_registry_body(config, ah_system);
+        var registyURL = ahServiceRegistry.url + '/register';
+        var body = getRegistryBody(config, ahSystem);
 
-        node.log("Service Registry: " + registy_url);
-        console.log(body);
+        node.log(body, "Service Registry: " + registyURL);
+        //console.log(body);
 
         axios.post(
-            registy_url,
+            registyURL,
             body,
             {
                 headers: {
@@ -67,74 +69,63 @@ module.exports = function (RED) {
                 }
             }
         ).then(function (response) {
-            let message = "Service Registered in Arrowhead:"
-            node.log(message);
-            var msg = {
-                payload: response,
-                message: message
-            };
-            node.send([null, msg, null]);
+            let message = "Service Registered in Arrowhead:";
+            node.log(response, message);
         }).catch(function (error) {
             let message = "Could not register service in Arrowhead:"
             node.error(message);
-            var msg = {
-                error: error,
-                message: message
-            };
-            node.send([null, null, msg]);
+            node.error(JSON.stringify(error, null, 2));
         });
 
     }
 
-    function unregister_from_ah_service_registry(ah_service, node) {
-        var ah_system = RED.nodes.getNode(ah_service.system);
-        var ah_service_registry = RED.nodes.getNode(ah_service.sr);
-        var unregister_url = ah_service_registry.url + '/unregister';
+    function unregisterFromAHServiceRegistry(ahService, node) {
+        let ahSystem = RED.nodes.getNode(ahService.system);
+        let ahServiceRegistry = RED.nodes.getNode(ahService.sr);
+        let unregisterURL = ahServiceRegistry.url + '/unregister';
         params = {
-            service_definition: ah_service.definition,
-            system_name: ah_system.name,
-            address: ah_system.address,
-            port: parseInt(ah_system.port)
+            serviceDefinition: ahService.definition,
+            systemName: ahSystem.name,
+            address: ahSystem.address,
+            port: parseInt(ahSystem.port)
         }
-        unregister_url += '?' + querystring.stringify(params);
+        unregisterURL += '?' + querystring.stringify(params);
 
         axios.delete(
-            unregister_url
+            unregisterURL,
+            {
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-type': 'application/json'
+                }
+            }
         ).then(function (response) {
             let message = "Service Unregistered from Arrowhead:";
-            node.log(message);
-            var msg = {
-                payload: response,
-                message: message
-            };
-            node.send([null, msg, null]);
-
-            register_in_ah_service_registry(ah_service, node);
+            node.log(response, message);
+            
+            registerInAHServiceRegistry(ahService, node);
         }).catch(function (error) {
             let message = "Could not unregister service from Arrowhead";
             node.error(message);
-            var msg = {
-                error: error,
-                message: message
-            };
-            node.send([null, null, msg]);
+            node.error(JSON.stringify(error, null, 2));
+            //node.send([null, null, msg]);
         });
     }
 
-    function get_registry_body(ah_service, ah_system) {
+    function getRegistryBody(ahService, ahSystem) {
         return {
             "interfaces": [
                 "HTTP-INSECURE-JSON"
             ],
             "providerSystem": {
-                "address": ah_system.address,
-                "port": parseInt(ah_system.port),
-                "systemName": ah_system.name
+                "address": ahSystem.address,
+                "port": parseInt(ahSystem.port),
+                "systemName": ahSystem.name
             },
             "secure": "NOT_SECURE",
-            "serviceDefinition": ah_service.definition,
-            "serviceUri": ah_service.uri,
-            "version": parseInt(ah_service.version)
+            "serviceDefinition": ahService.definition,
+            "serviceUri": ahService.uri,
+            "version": parseInt(ahService.version)
         }
     }
 

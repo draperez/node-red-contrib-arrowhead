@@ -1,10 +1,10 @@
 <script type="text/javascript">
-  RED.nodes.registerType('ah_service_endpoint', {
+  RED.nodes.registerType('ah service endpoint', {
     category: 'network',
     color: '#d1eae7',
     defaults: {
-      sr: { value: "", type: "ah_registry", required: true },
-      system: { value: "", type: "ah_system", required: true },
+      sr: { value: "", type: "ah registry", required: true },
+      system: { value: "", type: "ah system", required: true },
       method: { value: "get", required: true },
       uri: { value: "/ah_service", required: true },
       definition: { value: 'NodeRed Example Service'},
@@ -13,7 +13,7 @@
       replace: {value: false },
     },
     inputs: 0,
-    outputs: 3,
+    outputs: 1,
     icon: 'icons/arrowhead_logo_blue.svg',
     label: function () {
       return this.name || "Arrowhead Service";
@@ -21,7 +21,7 @@
   });
 </script>
 
-<script type="text/html" data-template-name="ah_service_endpoint">
+<script type="text/html" data-template-name="ah service endpoint">
 
   <div class="form-row">
     <label for="node-input-sr"><i class="icon-tag"></i> Arrowhead Service Registry</label>
@@ -67,6 +67,6 @@
     <input type="checkbox" id="node-input-replace" placeholder="Replace already registered service?"/>
 </script>
 
-<script type="text/html" data-help-name="ah_service_endpoint">
+<script type="text/html" data-help-name="ah service endpoint">
     <p>Creates a Service (REST endpoint) and registers to Arrowhead Framework.</p>
 </script>

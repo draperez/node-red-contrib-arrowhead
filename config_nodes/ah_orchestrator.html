@@ -1,5 +1,5 @@
 <script type="text/javascript">
-  RED.nodes.registerType('ah_orchestrator', {
+  RED.nodes.registerType('ah orchestrator', {
     category: 'config',
     defaults: {
       host: { value: "http://localhost", required: true },
@@ -13,10 +13,10 @@
   });
 </script>
 
-<script type="text/html" data-template-name="ah_orchestrator">
+<script type="text/html" data-template-name="ah orchestrator">
   <div class="form-row">
       <label for="node-config-input-host"><i class="fa fa-server"></i> Host</label>
-      <input type="text" id="node-config-input-address" placeholder="System Host. e.g.: http://localhost, https://172.17.1.99...">
+      <input type="text" id="node-config-input-host" placeholder="System Host. e.g.: http://localhost, https://172.17.1.99...">
   </div>
   <div class="form-row">
       <label for="node-config-input-port"><i class="fa fa-sitemap"></i> Port</label>
@@ -32,6 +32,6 @@
   </div>
 </script>
 
-<script type="text/html" data-help-name="ah_orchestrator">
+<script type="text/html" data-help-name="ah orchestrator">
     <p>Configuration node for Arrowhead framework Orchestrator.</p>
 </script>

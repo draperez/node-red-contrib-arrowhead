@@ -4,11 +4,11 @@ module.exports = function(RED) {
         this.host = n.host;
         this.port = n.port;
         this.path = n.path;
-        this.url = get_url(n);
+        this.url = getURL(n);
     }
-    RED.nodes.registerType("ah_orchestrator", ArrowheadOrchestratorConfigNode);
+    RED.nodes.registerType("ah orchestrator", ArrowheadOrchestratorConfigNode);
 
-    function get_url(n) {
+    function getURL(n) {
         let url = n.host;
         if(n.port) url += ':' + n.port;
         if(n.path) url += n.path;

@@ -1,0 +1,45 @@
+<script type="text/javascript">
+  RED.nodes.registerType('ah service discoverer', {
+    category: 'network',
+    color: '#d1eae7',
+    defaults: {
+      orchestrator: { value: "", type: "ah orchestrator", required: true },
+      requesterSystem: { value: "", type: "ah system", required: true },
+      serviceDefinition: { value: "", required: true },
+    },
+    inputs: 1,
+    outputs: 1,
+    icon: 'icons/arrowhead_logo_blue.svg',
+    label: function () {
+      return this.name || "Arrowhead Service Consumer";
+    }
+  });
+</script>
+
+<script type="text/html" data-template-name="ah service discoverer">
+
+  <div class="form-row">
+    <label for="node-input-orchestrator"><i class="icon-tag"></i> Arrowhead Orchestrator</label>
+    <input type="text" id="node-input-orchestrator" placeholder="">
+  </div>
+
+  <div class="form-row">
+    <label for="node-input-requesterSystem"><i class="icon-tag"></i> Requester System</label>
+    <input type="text" id="node-input-requesterSystem" placeholder="">
+  </div>
+
+  <div class="form-row">
+    <label for="node-input-serviceDefinition"><i class="icon-tag"></i> Service Definition</label>
+    <input type="text" id="node-input-serviceDefinition" placeholder="Service Definition">
+  </div>
+
+  <div class="form-row">
+      <label for="node-input-name"><i class="icon-tag"></i> Name</label>
+      <input type="text" id="node-input-name" placeholder="Node Name"/>
+  </div>
+</script>
+
+<script type="text/html" data-help-name="ah service discoverer">
+    <p>Prepares the URL for an HTTP request, using the given Arrowhead Orchestrator and <b>Service Definition</b>.</p>
+    <p>It is designed to be followed by an <b>http request</b> node.</p>
+</script>
