@@ -2,29 +2,103 @@ module.exports = function (RED) {
     const axios = require("axios");
     //const JSON = require("JSON");
     const querystring = require('querystring');
+    var cookieParser = require("cookie-parser");
+    var httpMiddleware = function(req,res,next) { next(); }
+    var corsHandler = function(req,res,next) { next(); }
+    var metricsHandler = function(req,res,next) { next(); }
+    var node;
+    var serviceUri;
+    var method
     function ArrowheadServiceEndpointNode(config) {
         RED.nodes.createNode(this, config);
-        var node = this;
-        var serviceURL = config.url || "/ah_service"; //or '/'+config.url???
+        node = this;
+        
+        method = config.method;
+        serviceUri = config.uri || "/ah_service";
+        if (serviceUri[0] !== '/') {
+            serviceUri = '/'+serviceUri;
+        }
 
-        switch (config.method) {
+        updateStatus("debug", "Registering endpoint:"+serviceUri+" ["+config.method+"]");
+
+        this.errorHandler = function(err,req,res,next) {
+            updateStatus("error", "Endpoint call error");
+            node.warn(err);
+            res.sendStatus(500);
+        };
+
+        switch (method) {
             case "post":
-                RED.httpNode.post(serviceURL, function (req, res) { addReqResToMsg(req, res, node); });
+                updateStatus("debug", "Register POST: "+serviceUri);
+                RED.httpNode.post(
+                    serviceUri,
+                    cookieParser(),
+                    httpMiddleware,
+                    corsHandler,
+                    metricsHandler,
+                    addReqResToMsg,
+                    this.errorHandler
+                );
                 break;
             case "put":
-                RED.httpNode.put(serviceURL, function (req, res) { addReqResToMsg(req, res, node); });
+                updateStatus("debug", "Register PUT: "+serviceUri);
+                RED.httpNode.put(
+                    serviceUri,
+                    cookieParser(),
+                    httpMiddleware,
+                    corsHandler,
+                    metricsHandler,
+                    addReqResToMsg,
+                    this.errorHandler
+                );
                 break;
             case "delete":
-                RED.httpNode.delete(serviceURL, function (req, res) { addReqResToMsg(req, res, node); });
+                updateStatus("debug", "Register DELETE: "+serviceUri);
+                RED.httpNode.delete(
+                    serviceUri,
+                    cookieParser(),
+                    httpMiddleware,
+                    corsHandler,
+                    metricsHandler,
+                    addReqResToMsg,
+                    this.errorHandler
+                );
                 break;
             case "options":
-                RED.httpNode.options(serviceURL, function (req, res) { addReqResToMsg(req, res, node); });
+                updateStatus("debug", "Register OPTIONS: "+serviceUri);
+                RED.httpNode.options(
+                    serviceUri,
+                    cookieParser(),
+                    httpMiddleware,
+                    corsHandler,
+                    metricsHandler,
+                    addReqResToMsg,
+                    this.errorHandler
+                );
                 break;
             case "patch":
-                RED.httpNode.patch(serviceURL, function (req, res) { addReqResToMsg(req, res, node); });
+                updateStatus("debug", "Register PATCH: "+serviceUri);
+                RED.httpNode.patch(
+                    serviceUri,
+                    cookieParser(),
+                    httpMiddleware,
+                    corsHandler,
+                    metricsHandler,
+                    addReqResToMsg,
+                    this.errorHandler
+                );
                 break;
             default:
-                RED.httpNode.get(serviceURL, function (req, res) { addReqResToMsg(req, res, node); });
+                updateStatus("debug", "Register GET: "+serviceUri);
+                RED.httpNode.get(
+                    serviceUri,
+                    cookieParser(),
+                    httpMiddleware,
+                    corsHandler,
+                    metricsHandler,
+                    addReqResToMsg,
+                    this.errorHandler
+                );
         }
 
         if (config.replace)
@@ -34,8 +108,7 @@ module.exports = function (RED) {
     }
     RED.nodes.registerType("ah service endpoint", ArrowheadServiceEndpointNode);
 
-    function addReqResToMsg(req, res, node) {
-        node.debug(res);
+    function addReqResToMsg(req, res) {
         msg = {
             _msgid: RED.util.generateId(),
             req: req,
@@ -45,7 +118,6 @@ module.exports = function (RED) {
             payload: null
         };
 
-        //node.send([msg, null, null]);
         node.send(msg);
     }
 
@@ -55,9 +127,6 @@ module.exports = function (RED) {
 
         var registyURL = ahServiceRegistry.url + '/register';
         var body = getRegistryBody(config, ahSystem);
-
-        node.log(body, "Service Registry: " + registyURL);
-        //console.log(body);
 
         axios.post(
             registyURL,
@@ -69,11 +138,11 @@ module.exports = function (RED) {
                 }
             }
         ).then(function (response) {
-            let message = "Service Registered in Arrowhead:";
-            node.log(response, message);
+            let message = "Registered in AH (["+method+"] "+serviceUri+")";
+            updateStatus("success", message);
         }).catch(function (error) {
-            let message = "Could not register service in Arrowhead:"
-            node.error(message);
+            let message = "Could not register service in Arrowhead";
+            updateStatus("error", message);
             node.error(JSON.stringify(error, null, 2));
         });
 
@@ -84,8 +153,8 @@ module.exports = function (RED) {
         let ahServiceRegistry = RED.nodes.getNode(ahService.sr);
         let unregisterURL = ahServiceRegistry.url + '/unregister';
         params = {
-            serviceDefinition: ahService.definition,
-            systemName: ahSystem.name,
+            service_definition: ahService.definition,
+            system_name: ahSystem.name,
             address: ahSystem.address,
             port: parseInt(ahSystem.port)
         }
@@ -101,14 +170,13 @@ module.exports = function (RED) {
             }
         ).then(function (response) {
             let message = "Service Unregistered from Arrowhead:";
-            node.log(response, message);
+            updateStatus("success", message);
             
             registerInAHServiceRegistry(ahService, node);
         }).catch(function (error) {
             let message = "Could not unregister service from Arrowhead";
-            node.error(message);
+            updateStatus("error", message);
             node.error(JSON.stringify(error, null, 2));
-            //node.send([null, null, msg]);
         });
     }
 
@@ -170,5 +238,20 @@ module.exports = function (RED) {
             }
         });
         return wrapper;
+    }
+
+    function updateStatus(type, text){
+        let status;
+        switch (type){
+            case "error":
+                status = {fill:"red",shape:"ring",text:text};
+                break;
+            case "success":
+                status = {fill:"green",shape:"dot",text:text};
+                break;
+            default:
+                status = {fill:"grey",shape:"ring",text:text};
+        }
+        node.status(status);
     }
 }

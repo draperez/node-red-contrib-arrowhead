@@ -6,9 +6,11 @@
       orchestrator: { value: "", type: "ah orchestrator", required: true },
       requesterSystem: { value: "", type: "ah system", required: true },
       serviceDefinition: { value: "", required: true },
+      method: { value: "get", required: true },
+      protocol: {value: "http", required: true}
     },
     inputs: 1,
-    outputs: 1,
+    outputs: 2,
     icon: 'icons/arrowhead_logo_blue.svg',
     label: function () {
       return this.name || "Arrowhead Service Consumer";
@@ -36,6 +38,25 @@
   <div class="form-row">
       <label for="node-input-name"><i class="icon-tag"></i> Name</label>
       <input type="text" id="node-input-name" placeholder="Node Name"/>
+  </div>
+
+  <div class="form-row">
+    <label for="node-input-method"><i class="fa fa-tasks"></i> <span data-i18n="httpin.label.method"></span></label>
+    <select type="text" id="node-input-method" style="width:70%;">
+      <option value="get">GET</option>
+      <option value="post">POST</option>
+      <option value="put">PUT</option>
+      <option value="delete">DELETE</option>
+      <option value="patch">PATCH</option>
+    </select>
+  </div>
+  
+  <div class="form-row">
+    <label for="node-input-protocol"><i class="fa fa-tasks"></i> Protocol</label>
+    <select type="text" id="node-input-protocol" style="width:70%;">
+      <option value="http">HTTP</option>
+      <option value="https">HTTPS</option>
+    </select>
   </div>
 </script>
 
