@@ -1,0 +1,501 @@
+[
+  {
+      "id": "8042baa8.501448",
+      "type": "tab",
+      "label": "Arrowhead testing",
+      "disabled": false,
+      "info": ""
+  },
+  {
+      "id": "79be9b34.c51464",
+      "type": "tab",
+      "label": "Manual Management",
+      "disabled": false,
+      "info": ""
+  },
+  {
+      "id": "2d96d36e.01b8d4",
+      "type": "ah registry",
+      "host": "http://172.17.10.219",
+      "port": "8443",
+      "path": "/serviceregistry"
+  },
+  {
+      "id": "9f6e29bb.f1a798",
+      "type": "ah system",
+      "address": "172.17.100.135",
+      "port": "1880",
+      "name": "nodered-provider-system"
+  },
+  {
+      "id": "9f6e29bb.f1a799",
+      "type": "ah orchestrator",
+      "host": "http://172.17.10.219",
+      "port": "8441",
+      "path": "/orchestrator",
+      "name": "AH Orchestrator"
+  },
+  {
+      "id": "c6e50e6a.8e8608",
+      "type": "ah system",
+      "address": "172.17.100.135",
+      "port": "0",
+      "name": "nodered-consumer-system"
+  },
+  {
+      "id": "9ddecc9c.a5d18",
+      "type": "debug",
+      "z": "8042baa8.501448",
+      "name": "Post Service Call",
+      "active": true,
+      "tosidebar": true,
+      "console": false,
+      "tostatus": false,
+      "complete": "true",
+      "targetType": "full",
+      "statusVal": "",
+      "statusType": "auto",
+      "x": 950,
+      "y": 440,
+      "wires": []
+  },
+  {
+      "id": "95a189f1.c3c7c",
+      "type": "http response",
+      "z": "8042baa8.501448",
+      "name": "",
+      "statusCode": "",
+      "headers": {},
+      "x": 860,
+      "y": 240,
+      "wires": []
+  },
+  {
+      "id": "48b1efaf.b74cc",
+      "type": "ah-endpoint-registration",
+      "z": "8042baa8.501448",
+      "sr": "2d96d36e.01b8d4",
+      "system": "9f6e29bb.f1a798",
+      "uri": "/example",
+      "definition": "nodered-example-ah-service",
+      "version": "0",
+      "name": "",
+      "replace": true,
+      "x": 320,
+      "y": 160,
+      "wires": []
+  },
+  {
+      "id": "44460fee.542598",
+      "type": "ah service discoverer",
+      "z": "8042baa8.501448",
+      "orchestrator": "9f6e29bb.f1a799",
+      "requesterSystem": "c6e50e6a.8e8608",
+      "serviceDefinition": "nodered-example-ah-service",
+      "method": "get",
+      "protocol": "http",
+      "x": 510,
+      "y": 600,
+      "wires": [
+          [
+              "3fb1b3d6.8d6bac"
+          ]
+      ]
+  },
+  {
+      "id": "3fb1b3d6.8d6bac",
+      "type": "debug",
+      "z": "8042baa8.501448",
+      "name": "Response",
+      "active": true,
+      "tosidebar": true,
+      "console": false,
+      "tostatus": false,
+      "complete": "true",
+      "targetType": "full",
+      "x": 920,
+      "y": 600,
+      "wires": []
+  },
+  {
+      "id": "a334af1c.4230a",
+      "type": "function",
+      "z": "79be9b34.c51464",
+      "name": "set headers",
+      "func": "msg.headers = {};\nmsg.headers['Accept'] = 'application/json';\nmsg.headers['Content-type'] = 'application/json';\nreturn msg;",
+      "outputs": 1,
+      "noerr": 0,
+      "x": 330,
+      "y": 320,
+      "wires": [
+          [
+              "dc53a12c.7df69"
+          ]
+      ]
+  },
+  {
+      "id": "e94a0e28.a4edc",
+      "type": "inject",
+      "z": "79be9b34.c51464",
+      "name": "",
+      "props": [
+          {
+              "p": "payload"
+          },
+          {
+              "p": "topic",
+              "vt": "str"
+          }
+      ],
+      "repeat": "",
+      "crontab": "",
+      "once": false,
+      "onceDelay": "",
+      "topic": "",
+      "payload": "{\"consumerId\":10,\"interfaceIds\":[2],\"providerIds\":[7],\"serviceDefinitionIds\":[19]}",
+      "payloadType": "json",
+      "x": 170,
+      "y": 320,
+      "wires": [
+          [
+              "a334af1c.4230a"
+          ]
+      ]
+  },
+  {
+      "id": "dc53a12c.7df69",
+      "type": "http request",
+      "z": "79be9b34.c51464",
+      "name": "post to Authorization Intracloud",
+      "method": "POST",
+      "ret": "txt",
+      "paytoqs": "ignore",
+      "url": "http://172.17.10.219:8445/authorization/mgmt/intracloud",
+      "tls": "",
+      "persist": false,
+      "proxy": "",
+      "authType": "",
+      "x": 590,
+      "y": 320,
+      "wires": [
+          [
+              "617350a9.7456d"
+          ]
+      ]
+  },
+  {
+      "id": "617350a9.7456d",
+      "type": "debug",
+      "z": "79be9b34.c51464",
+      "name": "",
+      "active": true,
+      "console": "false",
+      "complete": "false",
+      "x": 910,
+      "y": 320,
+      "wires": []
+  },
+  {
+      "id": "a782c635.9d4fa8",
+      "type": "comment",
+      "z": "79be9b34.c51464",
+      "name": "Authorize Seat Installation",
+      "info": "Calls the Authorization system (/authorization/mgmt/intracloud  POST ).\n\nAllows a consumer to comsume a service offered by a provider\n\nPreviously a consumer has to be registered\n\nShould be performed only once\n\nInformation needed in the request\n\n{\n  \"consumerId\": **8**,\n  \"interfaceIds\": [\n    **2**\n  ],\n  \"providerIds\": [\n    **7**\n  ],\n  \"serviceDefinitionIds\": [\n    **16**\n  ]\n}\n",
+      "x": 190,
+      "y": 240,
+      "wires": []
+  },
+  {
+      "id": "c58e1207.3a418",
+      "type": "function",
+      "z": "79be9b34.c51464",
+      "name": "set headers",
+      "func": "msg.headers = {};\nmsg.headers['Accept'] = 'application/json';\nmsg.headers['Content-type'] = 'application/json';\nreturn msg;",
+      "outputs": 1,
+      "noerr": 0,
+      "x": 330,
+      "y": 140,
+      "wires": [
+          [
+              "4fb0014d.d2ee9"
+          ]
+      ]
+  },
+  {
+      "id": "2caf289e.1aec08",
+      "type": "inject",
+      "z": "79be9b34.c51464",
+      "name": "",
+      "props": [
+          {
+              "p": "payload"
+          },
+          {
+              "p": "topic",
+              "vt": "str"
+          }
+      ],
+      "repeat": "",
+      "crontab": "",
+      "once": false,
+      "onceDelay": "",
+      "topic": "",
+      "payload": "{\"address\":\"172.17.100.135\",\"port\":0,\"systemName\":\"nodered-consumer-system\"}",
+      "payloadType": "json",
+      "x": 170,
+      "y": 140,
+      "wires": [
+          [
+              "c58e1207.3a418"
+          ]
+      ]
+  },
+  {
+      "id": "4fb0014d.d2ee9",
+      "type": "http request",
+      "z": "79be9b34.c51464",
+      "name": "post to Register System",
+      "method": "POST",
+      "ret": "txt",
+      "paytoqs": "ignore",
+      "url": "http://172.17.10.219:8443/serviceregistry/mgmt/systems",
+      "tls": "",
+      "persist": false,
+      "proxy": "",
+      "authType": "",
+      "x": 570,
+      "y": 140,
+      "wires": [
+          [
+              "bb1609b0.570de8"
+          ]
+      ]
+  },
+  {
+      "id": "bb1609b0.570de8",
+      "type": "debug",
+      "z": "79be9b34.c51464",
+      "name": "",
+      "active": true,
+      "console": "false",
+      "complete": "false",
+      "x": 910,
+      "y": 140,
+      "wires": []
+  },
+  {
+      "id": "6ece0d35.623154",
+      "type": "comment",
+      "z": "79be9b34.c51464",
+      "name": "Register Consumer System",
+      "info": "Calls the service register to register a system consumer.(/serviceregistry/mgmt/systems POST)\n\nShould be performed only once\n\nRequest \n{\n  \"address\": \"172.17.100.37\",\n   \"port\": 0,\n  \"systemName\": \"Consumer2\"\n}\n",
+      "x": 200,
+      "y": 60,
+      "wires": []
+  },
+  {
+      "id": "839ff66.9218208",
+      "type": "template",
+      "z": "8042baa8.501448",
+      "name": "",
+      "field": "payload",
+      "fieldType": "msg",
+      "format": "handlebars",
+      "syntax": "mustache",
+      "template": "{\n    \"message\": \"Hello world\"\n}",
+      "output": "json",
+      "x": 660,
+      "y": 240,
+      "wires": [
+          [
+              "95a189f1.c3c7c"
+          ]
+      ]
+  },
+  {
+      "id": "2810c26f.fc5fd6",
+      "type": "catch",
+      "z": "8042baa8.501448",
+      "name": "",
+      "scope": null,
+      "uncaught": false,
+      "x": 390,
+      "y": 740,
+      "wires": [
+          [
+              "c9e4e715.2f5408"
+          ]
+      ]
+  },
+  {
+      "id": "c9e4e715.2f5408",
+      "type": "debug",
+      "z": "8042baa8.501448",
+      "name": "ERROR",
+      "active": true,
+      "tosidebar": true,
+      "console": false,
+      "tostatus": false,
+      "complete": "true",
+      "targetType": "full",
+      "statusVal": "",
+      "statusType": "auto",
+      "x": 680,
+      "y": 740,
+      "wires": []
+  },
+  {
+      "id": "20b9f371.4803ac",
+      "type": "http in",
+      "z": "8042baa8.501448",
+      "name": "",
+      "url": "/example",
+      "method": "get",
+      "upload": false,
+      "swaggerDoc": "",
+      "x": 270,
+      "y": 240,
+      "wires": [
+          [
+              "839ff66.9218208",
+              "6cbe4901.fd19c8"
+          ]
+      ]
+  },
+  {
+      "id": "8369b287.fc04c",
+      "type": "http in",
+      "z": "8042baa8.501448",
+      "name": "",
+      "url": "/example",
+      "method": "post",
+      "upload": false,
+      "swaggerDoc": "",
+      "x": 280,
+      "y": 300,
+      "wires": [
+          [
+              "71056bf6.542f7c",
+              "9ddecc9c.a5d18"
+          ]
+      ]
+  },
+  {
+      "id": "71056bf6.542f7c",
+      "type": "http response",
+      "z": "8042baa8.501448",
+      "name": "",
+      "statusCode": "",
+      "headers": {},
+      "x": 870,
+      "y": 300,
+      "wires": []
+  },
+  {
+      "id": "81f04330.22992",
+      "type": "ah service discoverer",
+      "z": "8042baa8.501448",
+      "orchestrator": "9f6e29bb.f1a799",
+      "requesterSystem": "c6e50e6a.8e8608",
+      "serviceDefinition": "nodered-example-ah-service",
+      "method": "post",
+      "protocol": "http",
+      "x": 510,
+      "y": 660,
+      "wires": [
+          [
+              "1a165692.a8f1a9"
+          ]
+      ]
+  },
+  {
+      "id": "d0861f5e.2b5828",
+      "type": "inject",
+      "z": "8042baa8.501448",
+      "name": "",
+      "props": [
+          {
+              "p": "payload"
+          },
+          {
+              "p": "topic",
+              "vt": "str"
+          }
+      ],
+      "repeat": "",
+      "crontab": "",
+      "once": false,
+      "onceDelay": 0.1,
+      "topic": "",
+      "payload": "{\"message\":\"example\"}",
+      "payloadType": "json",
+      "x": 220,
+      "y": 660,
+      "wires": [
+          [
+              "81f04330.22992"
+          ]
+      ]
+  },
+  {
+      "id": "1a165692.a8f1a9",
+      "type": "debug",
+      "z": "8042baa8.501448",
+      "name": "Response",
+      "active": true,
+      "tosidebar": true,
+      "console": false,
+      "tostatus": false,
+      "complete": "true",
+      "targetType": "full",
+      "x": 920,
+      "y": 660,
+      "wires": []
+  },
+  {
+      "id": "1e4ff3e0.27372c",
+      "type": "inject",
+      "z": "8042baa8.501448",
+      "name": "",
+      "props": [
+          {
+              "p": "payload"
+          },
+          {
+              "p": "topic",
+              "vt": "str"
+          }
+      ],
+      "repeat": "",
+      "crontab": "",
+      "once": false,
+      "onceDelay": 0.1,
+      "topic": "",
+      "payload": "",
+      "payloadType": "date",
+      "x": 180,
+      "y": 600,
+      "wires": [
+          [
+              "44460fee.542598"
+          ]
+      ]
+  },
+  {
+      "id": "6cbe4901.fd19c8",
+      "type": "debug",
+      "z": "8042baa8.501448",
+      "name": "Get Service Call",
+      "active": true,
+      "tosidebar": true,
+      "console": false,
+      "tostatus": false,
+      "complete": "true",
+      "targetType": "full",
+      "statusVal": "",
+      "statusType": "auto",
+      "x": 920,
+      "y": 160,
+      "wires": []
+  }
+]
