@@ -1,11 +1,10 @@
 <script type="text/javascript">
-  RED.nodes.registerType('ah service endpoint', {
+  RED.nodes.registerType('ah-endpoint-registration', {
     category: 'network',
     color: '#d1eae7',
     defaults: {
       sr: { value: "", type: "ah registry", required: true },
       system: { value: "", type: "ah system", required: true },
-      method: { value: "get", required: true },
       uri: { value: "/ah_service", required: true },
       definition: { value: 'NodeRed Example Service'},
       version: { value: 0, required: true, validate: RED.validators.number() },
@@ -13,15 +12,15 @@
       replace: {value: false },
     },
     inputs: 0,
-    outputs: 1,
+    outputs: 0,
     icon: 'icons/arrowhead_logo_blue.svg',
     label: function () {
-      return this.name || "["+this.method.toUpperCase()+"] "+this.uri+" (AH Service)";
+      return this.name || this.uri+" (AH Registration)";
     }
   });
 </script>
 
-<script type="text/html" data-template-name="ah service endpoint">
+<script type="text/html" data-template-name="ah-endpoint-registration">
 
   <div class="form-row">
     <label for="node-input-sr"><i class="icon-tag"></i> Arrowhead Service Registry</label>
@@ -31,17 +30,6 @@
   <div class="form-row">
     <label for="node-input-system"><i class="icon-tag"></i> System</label>
     <input type="text" id="node-input-system" placeholder="">
-  </div>
-
-  <div class="form-row">
-    <label for="node-input-method"><i class="fa fa-tasks"></i> <span data-i18n="httpin.label.method"></span></label>
-    <select type="text" id="node-input-method" style="width:70%;">
-      <option value="get">GET</option>
-      <option value="post">POST</option>
-      <option value="put">PUT</option>
-      <option value="delete">DELETE</option>
-      <option value="patch">PATCH</option>
-    </select>
   </div>
 
   <div class="form-row">
@@ -67,6 +55,6 @@
     <input type="checkbox" id="node-input-replace" placeholder="Replace already registered service?"/>
 </script>
 
-<script type="text/html" data-help-name="ah service endpoint">
-    <p>Creates a Service (REST endpoint) and registers to Arrowhead Framework.</p>
+<script type="text/html" data-help-name="ah-endpoint-registration">
+    <p>Registers the given endpoint to Arrowhead framework.</p>
 </script>
