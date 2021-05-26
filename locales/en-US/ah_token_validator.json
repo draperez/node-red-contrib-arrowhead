@@ -1,0 +1,17 @@
+{
+  "ah_token_validator" : {
+    "label": {
+      "publickey": "Public Key",
+      "auth": "Arrowhead Auth. Service",
+      "name": "Node name"
+    },
+    "placeholder": {
+      "name": "The visible name of the node.",
+      "publickey": "The public key to validate the token. If empty, Arrowhead Auth. Service will be called",
+      "auth": "Arrowhead Auth. Service to call if public key is not set"
+    },
+    "warning": {
+      "publickey": "If empty, Arrowhead Auth. Service will be called to get the public key. Otherwise, msg.publickey must contain it to validate the token."
+    }
+  }
+}

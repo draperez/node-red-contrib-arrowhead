@@ -1,0 +1,17 @@
+{
+  "ah_registry" : {
+    "label": {
+      "host": "Host",
+      "port": "Port",
+      "path": "Path",
+      "name": "Node name"
+    },
+    "placeholder": {
+      "host": "Host where Arrowhead Core Service is available (e.g. https://172.17.10.219.",
+      "port": "Port where Arrowhead Core Service is available (e.g. 8443).",
+      "path": "Path where Arrowhead Core Service is available (e.g. /serviceregistry)",
+      "name": "Configuration node name."
+    }
+
+  }
+}

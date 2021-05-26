@@ -1,12 +1,12 @@
 module.exports = function(RED) {
-    function ArrowheadRegistryConfigNode(n) {
+    function ArrowheadCoreServiceConfigNode(n) {
         RED.nodes.createNode(this, n);
         this.host = n.host;
         this.port = n.port;
         this.path = n.path;
         this.url = getURL(n);
     }
-    RED.nodes.registerType("ah registry", ArrowheadRegistryConfigNode);
+    RED.nodes.registerType("ah core service", ArrowheadCoreServiceConfigNode);
     function getURL(n) {
         let url = n.host;
         if(n.port) url += ':' + n.port;

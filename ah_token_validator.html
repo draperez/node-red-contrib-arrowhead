@@ -1,0 +1,39 @@
+<script type="text/javascript">
+  RED.nodes.registerType('ah token validator', {
+    category: 'network',
+    color: '#d1eae7',
+    defaults: {
+      auth: { value: "", type: "ah core service", required: false },
+      publickey: { value: "" },
+      name: { value: "" }
+    },
+    inputs: 1,
+    outputs: 1,
+    icon: 'icons/arrowhead_logo_blue.svg',
+    label: function () {
+      return this.name || "AH Token Validator";
+    }
+  });
+</script>
+
+<script type="text/html" data-template-name="ah token validator">
+
+  <div class="form-row">
+    <label for="node-input-publickey"><i class="fa fa-key"></i> <span data-i18n="ah_token_validator.label.publickey"></span></label>
+    <input  type="text" id="node-input-publickey"
+            data-i18n="[placeholder]ah_token_validator.placeholder.publickey"
+            data-i18n="[title]ah_token_validator.placeholder.publickey">
+    <p><i data-i18n="ah_token_validator.warning.publickey"></i></p>
+  </div>
+
+  <div class="form-row">
+    <label for="node-input-auth">
+      <i class="fa fa-server"></i> 
+      <span data-i18n="ah_token_validator.label.auth"></span>
+    </label>
+    <input  type="text" 
+            id="node-input-auth"
+            data-i18n="[placeholder]ah_token_validator.placeholder.auth"
+            data-i18n="[title]ah_token_validator.placeholder.auth"/>
+  </div>
+</script>

@@ -1,12 +1,12 @@
 <script type="text/javascript">
-  RED.nodes.registerType('ah registry', {
+  RED.nodes.registerType('ah core service', {
     category: 'config',
     color: '#d1eae7',
     defaults: {
       host: { value: "http://localhost", required:true },
       port: { value: 8443, validate:RED.validators.number() },
       path: { value: '/serviceregistry'},
-      name: { value: 'Arrowhead Registry' }
+      name: { value: 'Arrowhead Core Service' }
     },
     label: function () {
       var label = this.host;
@@ -18,41 +18,41 @@
   });
 </script>
 
-<script type="text/html" data-template-name="ah registry">
+<script type="text/html" data-template-name="ah core service">
     <div class="form-row">
         <label for="node-config-input-host">
           <i class="fa fa-server"></i>  
-          <span data-i18n="ah_registry.label.host"></span>
+          <span data-i18n="ah_core_service.label.host"></span>
         </label>
         <input type="text" id="node-config-input-host"
-        data-i18n="[placeholder]ah_registry.placeholder.host"
-        data-i18n="[title]ah_registry.placeholder.host">
+        data-i18n="[placeholder]ah_core_service.placeholder.host"
+        data-i18n="[title]ah_core_service.placeholder.host">
     </div>
     <div class="form-row">
         <label for="node-config-input-port">
           <i class="fa fa-sitemap"></i>  
-          <span data-i18n="ah_registry.label.port"></span> 
+          <span data-i18n="ah_core_service.label.port"></span> 
         </label>
         <input type="number" id="node-config-input-port"
-        data-i18n="[placeholder]ah_registry.placeholder.port"
-        data-i18n="[title]ah_registry.placeholder.port">
+        data-i18n="[placeholder]ah_core_service.placeholder.port"
+        data-i18n="[title]ah_core_service.placeholder.port">
     </div>
     <div class="form-row">
         <label for="node-config-input-path">
           <i class="fa fa-bookmark"></i>
-          <span data-i18n="ah_registry.label.path"></span> 
+          <span data-i18n="ah_core_service.label.path"></span> 
         </label>
         <input type="text" id="node-config-input-path" 
-        data-i18n="[placeholder]ah_registry.placeholder.path"
-        data-i18n="[title]ah_registry.placeholder.path">
+        data-i18n="[placeholder]ah_core_service.placeholder.path"
+        data-i18n="[title]ah_core_service.placeholder.path">
     </div>
     <div class="form-row">
         <label for="node-config-input-name">
           <i class="fa fa-bookmark"></i> 
-          <span data-i18n="ah_registry.label.name"></span>  
+          <span data-i18n="ah_core_service.label.name"></span>  
         </label>
         <input type="text" id="node-config-input-name"
-        data-i18n="[placeholder]ah_registry.placeholder.name"
-        data-i18n="[title]ah_registry.placeholder.name">
+        data-i18n="[placeholder]ah_core_service.placeholder.name"
+        data-i18n="[title]ah_core_service.placeholder.name">
     </div>
 </script>
