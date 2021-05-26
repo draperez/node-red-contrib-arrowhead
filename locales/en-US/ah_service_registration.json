@@ -1,0 +1,28 @@
+{
+  "ah_service_registration" : {
+    "label": {
+      "sr": "Service Registry",
+      "authinfo": "Provider Auth. Info.",
+      "tlsConfig": "TLS Config.",
+      "useTLS": "Use TLS",
+      "usesToken": "Uses Token",
+      "system": "Provider System",
+      "requesterSystem": "Requester System",
+      "serviceDefinition": "Service Definition",
+      "path": "Service path",
+      "replace": "Replace",
+      "version": "Version",
+      "name": "Node name"
+    },
+    "placeholder": {
+      "sr": "Arrowhead Service Registry where the service will be registered.",
+      "authinfo": "Auth. Info. of the provider system.",
+      "system": "Arrowhead system related to the service that will be registered.",
+      "path": "The path (or uri) where the service will be listening to. e.g. /example",
+      "serviceDefinition": "The definition (or name) of the service that will be registered.",
+      "replace": "Delete previously registered services for the given definition before registering the new one.",
+      "version": "Version of the service",
+      "name": "The visible name of the node."
+    }
+  }
+}

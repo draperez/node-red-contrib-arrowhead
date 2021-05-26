@@ -1,0 +1,13 @@
+{
+  "ah_authinfo" : {
+    "label": {
+      "authinfo": "Arrowhead Auth. Info.",
+      "name": "Node name"
+    },
+    "placeholder": {
+      "authinfo": "System's Auth. Info. used in Arrowhead",
+      "name": "Configuration node name."
+    }
+
+  }
+}

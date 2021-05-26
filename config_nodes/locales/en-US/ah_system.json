@@ -1,0 +1,15 @@
+{
+  "ah_system" : {
+    "label": {
+      "address": "IP Address",
+      "port": "Port",
+      "name": "Node name"
+    },
+    "placeholder": {
+      "address": "IP Address of the system (e.g. 172.17.10.219.",
+      "port": "Port of the system (e.g. 1880).",
+      "name": "Configuration node name."
+    }
+
+  }
+}

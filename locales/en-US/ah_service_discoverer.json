@@ -2,9 +2,10 @@
   "ah_service_discoverer" : {
     "label": {
       "orchestrator": "Orchestrator",
-      "authinfo": "Authentication Info",
+      "authinfo": "Consumer Auth. Info.",
       "useTLS": "Use TLS",
-      "requesterSystem": "Requester System",
+      "tlsConfig": "TLS Config.",
+      "requesterSystem": "Consumer System",
       "serviceDefinition": "Service Definition",
       "name": "Node name"
     },

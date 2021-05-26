@@ -13,15 +13,21 @@
 
 <script type="text/html" data-template-name="ah authinfo">
   <div class="form-row">
-      <label for="node-config-input-authinfo"><i class="fa fa-key"></i> authenticationInfo</label>
-      <input type="text" id="node-config-input-authinfo" placeholder="Arrowhead authenticationInfo parameter">
+      <label for="node-config-input-authinfo">
+        <i class="fa fa-key"></i> 
+        <span data-i18n="ah_authinfo.label.authinfo"></span>
+      </label>
+      <input  type="text" id="node-config-input-authinfo"
+              data-i18n="[placeholder]ah_authinfo.placeholder.authinfo"
+              data-i18n="[title]ah_authinfo.placeholder.authinfo">
   </div>
   <div class="form-row">
-      <label for="node-config-input-name"><i class="fa fa-bookmark"></i> Name</label>
-      <input type="text" id="node-config-input-name" placeholder="Authentication info name.">
+      <label for="node-config-input-name">
+        <i class="fa fa-bookmark"></i>
+        <span data-i18n="ah_authinfo.label.name"></span>
+      </label>
+      <input  type="text" id="node-config-input-name"
+              data-i18n="[placeholder]ah_authinfo.placeholder.name"
+              data-i18n="[title]ah_authinfo.placeholder.name">
   </div>
-</script>
-
-<script type="text/html" data-help-name="ah system">
-    <p>Configuration node for Arrowhead Authentication information. This way it is reusable.</p>
 </script>

@@ -1,0 +1,126 @@
+<script type="text/javascript">
+  RED.nodes.registerType('ah service registration', {
+    category: 'network',
+    color: '#d1eae7',
+    defaults: {
+      sr: { value: "", type: "ah registry", required: true },
+      system: { value: "", type: "ah system", required: true },
+      path: { value: "/ah_service", required: true },
+      definition: { value: 'NodeRed Example Service'},
+      version: { value: 0, required: true, validate: RED.validators.number() },
+      name: { value: "" },
+      replace: {value: false },
+      tls: {type:"tls-config",required: false},
+      usetls: {value: false},
+      authinfo: {value: "", type: "ah authinfo"},
+      token: {value: false}
+    },
+    inputs: 0,
+    outputs: 0,
+    icon: 'icons/arrowhead_logo_blue.svg',
+    label: function () {
+      return this.name || this.path+" (AH Registration)";
+    },
+    oneditprepare: function() {
+      function updateTLSOptions() {
+          if ($("#node-input-usetls").is(':checked')) {
+              $("#node-row-tls").show();
+          } else {
+              $("#node-row-tls").hide();
+          }
+      }
+      if (this.tls) {
+          $('#node-input-usetls').prop('checked', true);
+      } else {
+          $('#node-input-usetls').prop('checked', false);
+      }
+      updateTLSOptions();
+      $("#node-input-usetls").on("click",function() {
+          updateTLSOptions();
+      });
+    },
+    oneditsave: function() {
+        if (!$("#node-input-usetls").is(':checked')) {
+            $("#node-input-tls").val("_ADD_");
+        }
+    }
+  });
+</script>
+
+<script type="text/html" data-template-name="ah service registration">
+
+  <div class="form-row">
+    <label for="node-input-sr"><i class="fa fa-registered"></i> <span data-i18n="ah_service_registration.label.sr"></span></label>
+    <input  type="text" id="node-input-sr"
+            data-i18n="[placeholder]ah_service_registration.placeholder.sr"
+            data-i18n="[title]ah_service_registration.placeholder.sr">
+  </div>
+
+  <div class="form-row">
+    <label for="node-input-usetls"><i class="fa fa-shield"></i> <span data-i18n="ah_service_registration.label.useTLS"></span></label>
+    <input type="checkbox" id="node-input-usetls" title="Use TLS" style="width: auto;"/>
+    <div id="node-row-tls" class="hide" style="box-sizing: border-box; margin-left: 2em">
+        <label for="node-input-tls">
+          <i class="fa fa-shield"></i>
+          <span data-i18n="ah_service_registration.label.tlsConfig"></span>
+        </label>
+        <input type="text" id="node-input-tls">
+    </div>
+  </div>
+
+  <div class="form-row">
+    <label for="node-input-authinfo">
+      <i class="fa fa-key"></i> 
+      <span data-i18n="ah_service_registration.label.authinfo"></span>
+    </label>
+    <input  type="text" 
+            id="node-input-authinfo"
+            data-i18n="[placeholder]ah_service_registration.placeholder.authinfo"
+            data-i18n="[title]ah_service_registration.placeholder.authinfo"/>
+  </div>
+
+  <div class="form-row">
+    <label for="node-input-token"><i class="fa fa-key"></i> <span data-i18n="ah_service_registration.label.usesToken"></span></label>
+    <input type="checkbox" id="node-input-token" style="width: auto;">
+  </div>
+
+  <div class="form-row">
+    <label for="node-input-system"><i class="fa fa-server"></i> <span data-i18n="ah_service_registration.label.system"></span></label>
+    <input type="text" id="node-input-system"
+    data-i18n="[title]ah_service_registration.placeholder.system">
+  </div>
+
+  <div class="form-row">
+    <label for="node-input-definition"><i class="fa fa-bookmark"></i> <span data-i18n="ah_service_registration.label.serviceDefinition"></span></label>
+    <input type="text" id="node-input-definition"
+    data-i18n="[placeholder]ah_service_registration.placeholder.serviceDefinition"
+    data-i18n="[title]ah_service_registration.placeholder.serviceDefinition"/>
+  </div>
+
+  <div class="form-row">
+    <label for="node-input-path"><i class="fa fa-globe"></i> <span data-i18n="ah_service_registration.label.path"></span></label>
+    <input id="node-input-path" type="text"
+    data-i18n="[placeholder]ah_service_registration.placeholder.path"
+    data-i18n="[title]ah_service_registration.placeholder.path"/>
+  </div>
+
+  <div class="form-row">
+    <label for="node-input-version"><i class="fa fa-bookmark"></i>  <span data-i18n="ah_service_registration.label.version"></span></label>
+    <input type="number" id="node-input-version"
+    data-i18n="[placeholder]ah_service_registration.placeholder.version"
+    data-i18n="[title]ah_service_registration.placeholder.version"/>
+  </div>
+  <div class="form-row">
+    <label for="node-input-replace"><i class="fa fa-trash-restore"></i>  <span data-i18n="ah_service_registration.label.replace"></span></label>
+    <input type="checkbox" id="node-input-replace"
+    data-i18n="[placeholder]ah_service_registration.placeholder.replace"
+    data-i18n="[title]ah_service_registration.placeholder.replace"
+    style="width: auto;"/>
+  </div>
+  <div class="form-row">
+      <label for="node-input-name"><i class="fa fa-bookmark"></i>  <span data-i18n="ah_service_registration.label.name"></span></label>
+      <input type="text" id="node-input-name"
+      data-i18n="[placeholder]ah_service_registration.placeholder.name"
+      data-i18n="[title]ah_service_registration.placeholder.name"/>
+  </div>
+</script>

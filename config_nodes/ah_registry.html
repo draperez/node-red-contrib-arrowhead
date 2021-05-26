@@ -20,23 +20,39 @@
 
 <script type="text/html" data-template-name="ah registry">
     <div class="form-row">
-        <label for="node-config-input-host"><i class="fa fa-server"></i> Service Registry Host</label>
-        <input type="text" id="node-config-input-host" placeholder="e.g.: localhost, https://example.com...">
+        <label for="node-config-input-host">
+          <i class="fa fa-server"></i>  
+          <span data-i18n="ah_registry.label.host"></span>
+        </label>
+        <input type="text" id="node-config-input-host"
+        data-i18n="[placeholder]ah_registry.placeholder.host"
+        data-i18n="[title]ah_registry.placeholder.host">
     </div>
     <div class="form-row">
-        <label for="node-config-input-port"><i class="fa fa-sitemap"></i> Service Registry Port</label>
-        <input type="number" id="node-config-input-port" placeholder="e.g.: 80, 443...">
+        <label for="node-config-input-port">
+          <i class="fa fa-sitemap"></i>  
+          <span data-i18n="ah_registry.label.port"></span> 
+        </label>
+        <input type="number" id="node-config-input-port"
+        data-i18n="[placeholder]ah_registry.placeholder.port"
+        data-i18n="[title]ah_registry.placeholder.port">
     </div>
     <div class="form-row">
-        <label for="node-config-input-path"><i class="fa fa-bookmark"></i> Service Registry Path</label>
-        <input type="text" id="node-config-input-path" placeholder="e.g.: /api, /v1/api, /nodered...">
+        <label for="node-config-input-path">
+          <i class="fa fa-bookmark"></i>
+          <span data-i18n="ah_registry.label.path"></span> 
+        </label>
+        <input type="text" id="node-config-input-path" 
+        data-i18n="[placeholder]ah_registry.placeholder.path"
+        data-i18n="[title]ah_registry.placeholder.path">
     </div>
     <div class="form-row">
-        <label for="node-config-input-name"><i class="fa fa-bookmark"></i> Service Registry Name (optional)</label>
-        <input type="text" id="node-config-input-name">
+        <label for="node-config-input-name">
+          <i class="fa fa-bookmark"></i> 
+          <span data-i18n="ah_registry.label.name"></span>  
+        </label>
+        <input type="text" id="node-config-input-name"
+        data-i18n="[placeholder]ah_registry.placeholder.name"
+        data-i18n="[title]ah_registry.placeholder.name">
     </div>
-</script>
-
-<script type="text/html" data-help-name="ah registry">
-    <p>Configuration node for Arrowhead framework Service Registry.</p>
 </script>

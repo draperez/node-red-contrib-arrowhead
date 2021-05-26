@@ -3,24 +3,22 @@ module.exports = function (RED) {
     const axios = require("axios");
     const querystring = require('querystring');
     var node;
-    var serviceUri;
-    function ArrowheadEndpointRegistrationNode(config) {
+
+    function ArrowheadServiceRegistrationNode(config) {
         RED.nodes.createNode(this, config);
         node = this;
-        
-        serviceUri = config.uri || "/ah_service";
-        if (serviceUri[0] !== '/') {
-            serviceUri = '/'+serviceUri;
-        }
 
-        helpers.updateStatus(node, "debug", "Registering endpoint:"+serviceUri);
+        if (config.path[0] !== '/') {
+            config.path = '/'+config.path;
+        }
+        helpers.updateStatus(node, "debug", "Registering service: "+config.path);
 
         if (config.replace)
-            unregisterFromAHServiceRegistry(config, node,);
+            unregisterFromAHServiceRegistry(config, node);
         else
             registerInAHServiceRegistry(config, node);
     }
-    RED.nodes.registerType("ah-endpoint-registration", ArrowheadEndpointRegistrationNode);
+    RED.nodes.registerType("ah service registration", ArrowheadServiceRegistrationNode);
 
     function registerInAHServiceRegistry(config, node) {
         var ahSystem = RED.nodes.getNode(config.system);
@@ -43,7 +41,7 @@ module.exports = function (RED) {
             body,
             opts
         ).then(function (response) {
-            let message = "Registered in AH ("+serviceUri+")";
+            let message = "Registered in AH ("+config.path+")";
             helpers.updateStatus(node, "success", message);
         }).catch(function (error) {
             let message = "Could not register service in Arrowhead";
@@ -103,7 +101,7 @@ module.exports = function (RED) {
             },
             "secure": "NOT_SECURE",
             "serviceDefinition": ahService.definition,
-            "serviceUri": ahService.uri,
+            "serviceUri": ahService.path,
             "version": parseInt(ahService.version)
         }
 
