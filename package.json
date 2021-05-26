@@ -1,13 +1,13 @@
 {
   "name": "node-red-contrib-arrowhead",
-  "version": "0.1.2",
+  "version": "0.2.0",
   "description": "Node-red node for arrowhead framework.",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/draperez/node-red-contrib-arrowhead.git"
   },
   "dependencies": {
-    "axios": "0.20.0"
+    "axios": "0.21.1"
   },
   "keywords": [
     "arrowhead",
@@ -24,6 +24,7 @@
       "ah system": "config_nodes/ah_system.js",
       "ah registry": "config_nodes/ah_registry.js",
       "ah orchestrator": "config_nodes/ah_orchestrator.js",
+      "ah authinfo": "config_nodes/ah_authinfo.js",
       "ah service endpoint": "ah_endpoint_registration.js",
       "ah service discoverer": "ah_service_discoverer.js"
     }

@@ -1,0 +1,27 @@
+<script type="text/javascript">
+  RED.nodes.registerType('ah authinfo', {
+    category: 'config',
+    defaults: {
+      authinfo: { value: "", required: true },
+      name: { value: "", required: true }
+    },
+    label: function () {
+      return this.name;
+    }
+  });
+</script>
+
+<script type="text/html" data-template-name="ah authinfo">
+  <div class="form-row">
+      <label for="node-config-input-authinfo"><i class="fa fa-key"></i> authenticationInfo</label>
+      <input type="text" id="node-config-input-authinfo" placeholder="Arrowhead authenticationInfo parameter">
+  </div>
+  <div class="form-row">
+      <label for="node-config-input-name"><i class="fa fa-bookmark"></i> Name</label>
+      <input type="text" id="node-config-input-name" placeholder="Authentication info name.">
+  </div>
+</script>
+
+<script type="text/html" data-help-name="ah system">
+    <p>Configuration node for Arrowhead Authentication information. This way it is reusable.</p>
+</script>

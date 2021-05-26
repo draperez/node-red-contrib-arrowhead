@@ -1,6 +1,6 @@
 module.exports = function (RED) {
+    const helpers = require("./ah_helpers");
     const axios = require("axios");
-    //const JSON = require("JSON");
     const querystring = require('querystring');
     var node;
     var serviceUri;
@@ -13,10 +13,10 @@ module.exports = function (RED) {
             serviceUri = '/'+serviceUri;
         }
 
-        updateStatus("debug", "Registering endpoint:"+serviceUri);
+        helpers.updateStatus(node, "debug", "Registering endpoint:"+serviceUri);
 
         if (config.replace)
-            unregisterFromAHServiceRegistry(config, node);
+            unregisterFromAHServiceRegistry(config, node,);
         else
             registerInAHServiceRegistry(config, node);
     }
@@ -29,22 +29,27 @@ module.exports = function (RED) {
         var registyURL = ahServiceRegistry.url + '/register';
         var body = getRegistryBody(config, ahSystem);
 
+        opts = {
+            headers: {
+                'Accept': 'application/json',
+                'Content-type': 'application/json'
+            }
+        };
+
+        opts = helpers.addTLSToOptions(RED, config, opts);
+
         axios.post(
             registyURL,
             body,
-            {
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-type': 'application/json'
-                }
-            }
+            opts
         ).then(function (response) {
             let message = "Registered in AH ("+serviceUri+")";
-            updateStatus("success", message);
+            helpers.updateStatus(node, "success", message);
         }).catch(function (error) {
             let message = "Could not register service in Arrowhead";
-            updateStatus("error", message);
-            node.error(JSON.stringify(error, null, 2));
+            helpers.updateStatus(node, "error", message);
+            node.error(error);
+            //node.error(JSON.stringify(error, null, 2));
         });
 
     }
@@ -61,28 +66,33 @@ module.exports = function (RED) {
         }
         unregisterURL += '?' + querystring.stringify(params);
 
+        opts = {
+            headers: {
+                'Accept': 'application/json',
+                'Content-type': 'application/json'
+            }
+        };
+
+        opts = helpers.addTLSToOptions(RED, ahService, opts);
+
         axios.delete(
             unregisterURL,
-            {
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-type': 'application/json'
-                }
-            }
+            opts
         ).then(function (response) {
             let message = "Service Unregistered from Arrowhead:";
-            updateStatus("success", message);
+            helpers.updateStatus(node, "success", message);
             
             registerInAHServiceRegistry(ahService, node);
         }).catch(function (error) {
             let message = "Could not unregister service from Arrowhead";
-            updateStatus("error", message);
+            helpers.updateStatus(node, "error", message);
             node.error(JSON.stringify(error, null, 2));
         });
     }
 
     function getRegistryBody(ahService, ahSystem) {
-        return {
+
+        body = {
             "interfaces": [
                 "HTTP-INSECURE-JSON"
             ],
@@ -96,20 +106,16 @@ module.exports = function (RED) {
             "serviceUri": ahService.uri,
             "version": parseInt(ahService.version)
         }
-    }
 
-    function updateStatus(type, text){
-        let status;
-        switch (type){
-            case "error":
-                status = {fill:"red",shape:"ring",text:text};
-                break;
-            case "success":
-                status = {fill:"green",shape:"dot",text:text};
-                break;
-            default:
-                status = {fill:"grey",shape:"ring",text:text};
+        if(ahService.token) {
+            body["secure"] = "TOKEN";
+            body["interfaces"] = ["HTTP-SECURE-JSON"];
         }
-        node.status(status);
+
+        if(ahService.authinfo !== undefined){
+            let authinfo = RED.nodes.getNode(ahService.authinfo);
+            body["providerSystem"]["authenticationInfo"] = authinfo.authinfo;
+        }
+        return body;
     }
 }

@@ -5,7 +5,7 @@
       host: { value: "http://localhost", required: true },
       port: { value: "8440", validate: RED.validators.number() },
       path: { value: "/orchestrator", required: true },
-      name: { value: 'Arrowhead Orchestrator', required: true }
+      name: { value: 'Arrowhead Orchestrator' }
     },
     label: function () {
       return this.name || "Arrowhead Orchestrator"
@@ -15,20 +15,20 @@
 
 <script type="text/html" data-template-name="ah orchestrator">
   <div class="form-row">
-      <label for="node-config-input-host"><i class="fa fa-server"></i> Host</label>
-      <input type="text" id="node-config-input-host" placeholder="System Host. e.g.: http://localhost, https://172.17.1.99...">
+      <label for="node-config-input-host"><i class="fa fa-server"></i> <span data-i18n="ah_orchestrator.label.host"></span></label>
+      <input type="text" id="node-config-input-host"  data-i18n="[placeholder]ah_service_discoverer.placeholder.host">
   </div>
   <div class="form-row">
-      <label for="node-config-input-port"><i class="fa fa-sitemap"></i> Port</label>
-      <input type="number" id="node-config-input-port" placeholder="System port. e.g.: 80, 443...">
+      <label for="node-config-input-port"><i class="fa fa-sitemap"></i> <span data-i18n="ah_orchestrator.label.port"></span></label>
+      <input type="number" id="node-config-input-port"  data-i18n="[placeholder]ah_service_discoverer.placeholder.port">
   </div>
   <div class="form-row">
-      <label for="node-config-input-path"><i class="fa fa-bookmark"></i> Path</label>
-      <input type="text" id="node-config-input-path" placeholder="Orchestrator service path.">
+      <label for="node-config-input-path"><i class="fa fa-bookmark"></i> <span data-i18n="ah_orchestrator.label.path"></span></label>
+      <input type="text" id="node-config-input-path"  data-i18n="[placeholder]ah_service_discoverer.placeholder.path">
   </div>
   <div class="form-row">
-      <label for="node-config-input-name"><i class="fa fa-bookmark"></i> Name</label>
-      <input type="text" id="node-config-input-name" placeholder="System Name.">
+      <label for="node-config-input-name"><i class="fa fa-bookmark"></i> <span data-i18n="ah_orchestrator.label.name"></span></label>
+      <input type="text" id="node-config-input-name" data-i18n="[placeholder]ah_service_discoverer.placeholder.name">
   </div>
 </script>
 

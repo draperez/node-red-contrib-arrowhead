@@ -5,13 +5,15 @@
     defaults: {
       host: { value: "http://localhost", required:true },
       port: { value: 8443, validate:RED.validators.number() },
-      path: { value: '/serviceregistry'}
+      path: { value: '/serviceregistry'},
+      name: { value: 'Arrowhead Registry' }
     },
     label: function () {
       var label = this.host;
       if(this.port) label += ':'+this.port
       if(this.path) label += this.path
-      return label;
+
+      return this.name || label;
     }
   });
 </script>
@@ -28,6 +30,10 @@
     <div class="form-row">
         <label for="node-config-input-path"><i class="fa fa-bookmark"></i> Service Registry Path</label>
         <input type="text" id="node-config-input-path" placeholder="e.g.: /api, /v1/api, /nodered...">
+    </div>
+    <div class="form-row">
+        <label for="node-config-input-name"><i class="fa fa-bookmark"></i> Service Registry Name (optional)</label>
+        <input type="text" id="node-config-input-name">
     </div>
 </script>
 

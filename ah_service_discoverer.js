@@ -1,6 +1,7 @@
 module.exports = function (RED) {
+    const helpers = require("./ah_helpers");
     const axios = require("axios");
-    const qs = require('qs');
+    // const qs = require("qs");
     function ArrowheadServiceDiscovererNode(config) {
         RED.nodes.createNode(this, config);
         let node = this;
@@ -15,123 +16,107 @@ module.exports = function (RED) {
     }
     RED.nodes.registerType("ah service discoverer", ArrowheadServiceDiscovererNode);
 
-    function askServiceURL(orchestrationURL, config, previousMsg, done, send, node){
-        body = prepareOrchestrationBody(config);
+    function askServiceURL(orchestrationURL, config, msg, done, send, node){
+        helpers.updateStatus(node, "info", "Asking Service URL to orchestrator...");
+        body = prepareOrchestrationBody(config, msg);
+        opts = {
+            headers: {
+                'Accept': 'application/json',
+                'Content-type': 'application/json'
+            }
+        }
+
+        opts = helpers.addTLSToOptions(RED, config, opts);
+
         axios.post(
             orchestrationURL,
             body,
-            {
-                headers: {
-                    'Accept': 'application/json',
-                    'Content-type': 'application/json'
-                }
-            }
+            opts
         ).then(function (response) {
             if(response.data.response.length == 0){
                 var error = "Could not find requested service: "+body["requestedService"]["serviceDefinitionRequirement"];
-                updateStatus(node, "error", "Could not find service.");
+                helpers.updateStatus(node, "error", "Could not find service.");
                 done(error);
             }else{
                 var serviceDefinition = response.data.response[0].provider.systemName;
                 var address = response.data.response[0].provider.address;
                 var port = response.data.response[0].provider.port;
                 var serviceUri = response.data.response[0].serviceUri;
-                var baseURL = address+":"+port;
-                var fullURL = config.protocol + "://" + baseURL + serviceUri;
-                updateStatus(node, "success", "["+config.method+"] "+serviceDefinition+": "+fullURL);
-                callService(config.method, fullURL, previousMsg, done, send, node);
+                var fullURL = address + ":" + port + serviceUri;
+                helpers.updateStatus(node, "success", serviceDefinition+" => "+fullURL);
+
+                msg.ahOrchestratorResponse = response;
+                msg.payload = [];
+                for (let item of response.data.response){
+                    msg.payload.push({
+                        "url": item.provider.address+":"+item.provider.port+item.serviceUri,
+                        "authorizationTokens": item.authorizationTokens
+                    });
+                }
+                response.data.response;
+                send(msg)
+                done();
             }
         }).catch(function (error) {
-            updateStatus(node, "error", "Orchestrator error.");
+            helpers.updateStatus(node, "error", "Orchestrator error.");
             done(error);
         });
     }
 
-    function callService(method, serviceUrl, previousMsg, done, send, node){
-        var msg = previousMsg;
-        msg.method = method;
-        msg.requestBody = previousMsg.payload;
-        msg.serviceUrl = serviceUrl;
-        msg.payload = "nothing done yet";
-        msg.options = {
-            method: method,
-            headers: previousMsg.headers || {}, // get headers from previousMsg or config?
-            data: previousMsg.payload,/*qs.stringify(previousMsg.payload),*/
-            url: serviceUrl,
-            baseURL: previousMsg.baseURL,
-            params: previousMsg.params,
-            timeout: previousMsg.timeout || 0,
-            auth: previousMsg.auth,
-            responseType:  previousMsg.responseType || 'json',
-            responseEncoding:  previousMsg.responseEncoding || 'utf8',
-            xsrfCookieName: previousMsg.xsrfCookieName || 'XSRF-TOKEN',
-            xsrfHeaderName: previousMsg.xsrfHeaderName || 'X-XSRF-TOKEN',
-            maxRedirects: previousMsg.maxRedirects || 5,
-            decompress: previousMsg.decompress || true,
-        }
-        axios(msg.options)
-        .then(function (response) {
-            msg.res = response;
-            msg.payload = response.data;
-            send(msg);
-            done();
-        }).catch(function (error) {
-            updateStatus(node, "error", "Could not call service: ["+method+"] " + serviceUrl);
-            done(error);
-        });
-    }
-
-    function prepareOrchestrationBody(config) {
+    function prepareOrchestrationBody(config, msg) {
         let system = RED.nodes.getNode(config.requesterSystem);
+        if (msg.body !== undefined) {
+            body = msg.body;
+        }else{
+            // Set Authentication Info
+            if(msg.authenticationInfo !== undefined){
+                authenticationInfo = msg.authenticationInfo;
+            }else if(config.authinfo !== undefined){
+                let authinfo = RED.nodes.getNode(config.authinfo);
+                authenticationInfo = authinfo.authinfo;
+            }else {
+                authenticationInfo = null;
+            }
 
-        return {
-            "requesterSystem": {
-                "systemName": system.name,
-                "address": system.address,
-                "port": parseInt(system.port),
-                "authenticationInfo": null
-            },
-            "requesterCloud": null,
-            "requestedService": {
-                "serviceDefinitionRequirement": config.serviceDefinition,
-                "interfaceRequirements": [
-                    "HTTP-INSECURE-JSON"
-                ],
-                "securityRequirements": null,
-                "metadataRequirements": null,
-                "versionRequirement": null,
-                "minVersionRequirement": null,
-                "maxVersionRequirement": null,
-                "pingProviders": false
-            },
-            "orchestrationFlags": {
-                "onlyPreferred": false,
-                "overrideStore": true,
-                "externalServiceRequest": false,
-                "enableInterCloud": false,
-                "enableQoS": false,
-                "matchmaking": true,
-                "metadataSearch": false,
-                "triggerInterCloud": false,
-                "pingProviders": false
-            },
-            "preferredProviders": [],
-            "commands": {}
-        };
-    }
-
-    function updateStatus(node, type, text){
-        let status;
-        switch (type){
-            case "error":
-                status = {fill:"red",shape:"ring",text:text};
-                break;
-            case "success":
-                status = {fill:"green",shape:"dot",text:text};
-                break;
-            default:
-                status = {fill:"grey",shape:"ring",text:text};
+            // Set Service Definition
+            if(msg.serviceDefinition !== undefined){
+                serviceDefinition = msg.serviceDefinition;
+            }else{
+                serviceDefinition = config.serviceDefinition;
+            }
+            body = {
+                "requesterSystem": {
+                    "systemName": system.name,
+                    "address": system.address,
+                    "port": parseInt(system.port),
+                    "authenticationInfo": authenticationInfo
+                },
+                "requesterCloud": null,
+                "requestedService": {
+                    "serviceDefinitionRequirement": serviceDefinition,
+                    "interfaceRequirements": [],
+                    "securityRequirements": null,
+                    "metadataRequirements": null,
+                    "versionRequirement": null,
+                    "minVersionRequirement": null,
+                    "maxVersionRequirement": null,
+                    "pingProviders": false
+                },
+                "orchestrationFlags": {
+                    "onlyPreferred": false,
+                    "overrideStore": true,
+                    "externalServiceRequest": false,
+                    "enableInterCloud": false,
+                    "enableQoS": false,
+                    "matchmaking": true,
+                    "metadataSearch": false,
+                    "triggerInterCloud": false,
+                    "pingProviders": false
+                },
+                "preferredProviders": [],
+                "commands": {}
+            };
         }
-        node.status(status);
+        return body;
     }
 }

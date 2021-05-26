@@ -1,0 +1,16 @@
+{
+  "ah_service_discoverer" : {
+    "label": {
+      "orchestrator": "Orchestrator",
+      "authinfo": "Authentication Info",
+      "useTLS": "Use TLS",
+      "requesterSystem": "Requester System",
+      "serviceDefinition": "Service Definition",
+      "name": "Node name"
+    },
+    "placeholder": {
+      "name": "The visible name of the node.",
+      "serviceDefinition": "The definition (or name) of the service to discover."
+    }
+  }
+}

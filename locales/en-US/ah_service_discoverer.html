@@ -1,0 +1,56 @@
+<script type="text/html" data-help-name="ah service discoverer">
+  <p>Calls AH Orchestrator and returns the service information for the given
+    <em>service definition</em>.
+  </p>
+  <p>It is usually followed by a <b>http request</b> node (not directly).</p>
+  <h3>Inputs</h3>
+    <dl class="message-properties">
+      <dt class="optional">serviceDefinition
+        <span class="property-type">string</span>
+      </dt>
+      <dd>
+        The definition (name) of the service to discover.
+        It will override configuration parameter.
+      </dd>
+      <dt class="optional">body
+        <span class="property-type">object</span>
+      </dt>
+      <dd>It will override configuration parameters.</dd>
+      <dt class="optional">authenticationInfo
+        <span class="property-type">string</span>
+      </dt>
+      <dd>
+        Authentication Info needed to authenticate against Arrowhead Framework.
+        It will override configuration parameter.
+      </dd>
+  </dt>
+  <h3>Outputs:</h3>
+  <ol class="node-ports">
+    <li>Standard output
+      <dl class="message-properties">
+          <dt>payload <span class="property-type">array</span></dt>
+          <dd>
+            A simplified version of the response.
+            An array with service info discovered for the given description (url & tokens).
+          </dd>
+          <dt>ahOrchestratorResponse <span class="property-type">object</span></dt>
+          <dd>Full orchestrator response.</dd>
+      </dl>
+    </li>
+    <!--li>Standard error
+        <dl class="message-properties">
+            <dt>payload <span class="property-type">string</span></dt>
+            <dd>the standard error of the command.</dd>
+        </dl>
+    </li-->
+  </ol>
+  <h3>References</h3>
+  <ul>
+      <li>
+        More info about orchestrator at
+        <a href="https://github.com/arrowhead-f/core-java-spring#orchestrator">
+          https://github.com/arrowhead-f/core-java-spring#orchestrator
+        </a>.
+      </li>
+  </ul>
+</script>
