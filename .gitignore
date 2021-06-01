@@ -2,6 +2,7 @@ my_flows.json
 
 # Logs
 log.txt
+logs.txt
 logs
 *.log
 npm-debug.log*
