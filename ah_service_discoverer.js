@@ -9,14 +9,14 @@ module.exports = function (RED) {
         node.on('input', function(msg, send, done){
             done = done || function() { if (arguments.length>0) node.error.apply(node, arguments) };
             send = send || function() { node.send.apply(node, arguments) };
-            var ahOrchestrator = RED.nodes.getNode(config.orchestrator);
-            var orchestrationURL = ahOrchestrator.url+"/orchestration" || "/orchestration";
-            askServiceURL(orchestrationURL, config, msg, done, send, node); 
+            askServiceURL(config, msg, done, send, node); 
         });
     }
     RED.nodes.registerType("ah service discoverer", ArrowheadServiceDiscovererNode);
 
-    function askServiceURL(orchestrationURL, config, msg, done, send, node){
+    function askServiceURL(config, msg, done, send, node){
+        let ahOrchestrator = RED.nodes.getNode(config.orchestrator);
+        let orchestrationURL = ahOrchestrator.url+"/orchestration" || "/orchestration";
         helpers.updateStatus(node, "info", "Asking Service URL to orchestrator...");
         body = prepareOrchestrationBody(config, msg);
         opts = {
@@ -26,7 +26,7 @@ module.exports = function (RED) {
             }
         }
 
-        opts = helpers.addTLSToOptions(RED, config, opts);
+        opts = helpers.addTLSToOptions(RED, ahOrchestrator, opts);
 
         axios.post(
             orchestrationURL,

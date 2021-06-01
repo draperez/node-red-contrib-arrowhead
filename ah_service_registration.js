@@ -34,7 +34,7 @@ module.exports = function (RED) {
             }
         };
 
-        opts = helpers.addTLSToOptions(RED, config, opts);
+        opts = helpers.addTLSToOptions(RED, ahServiceRegistry, opts);
 
         axios.post(
             registyURL,
@@ -43,9 +43,23 @@ module.exports = function (RED) {
         ).then(function (response) {
             let message = "Registered in AH ("+config.path+")";
             helpers.updateStatus(node, "success", message);
+            node.send({
+                payload: {
+                    result: "success",
+                    path: config.path,
+                    message: message
+                }
+            });
         }).catch(function (error) {
             let message = "Could not register service in Arrowhead";
             helpers.updateStatus(node, "error", message);
+            node.send({
+                payload: {
+                    result: "error",
+                    path: config.path,
+                    message: message
+                }
+            });
             node.error(error);
             //node.error(JSON.stringify(error, null, 2));
         });
@@ -71,7 +85,7 @@ module.exports = function (RED) {
             }
         };
 
-        opts = helpers.addTLSToOptions(RED, ahService, opts);
+        opts = helpers.addTLSToOptions(RED, ahServiceRegistry, opts);
 
         axios.delete(
             unregisterURL,

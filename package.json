@@ -7,7 +7,8 @@
     "url": "git+https://github.com/draperez/node-red-contrib-arrowhead.git"
   },
   "dependencies": {
-    "axios": "0.21.1"
+    "axios": "0.21.1",
+    "node-jose": "2.0.0"
   },
   "keywords": [
     "arrowhead",

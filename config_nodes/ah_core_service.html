@@ -6,7 +6,9 @@
       host: { value: "http://localhost", required:true },
       port: { value: 8443, validate:RED.validators.number() },
       path: { value: '/serviceregistry'},
-      name: { value: 'Arrowhead Core Service' }
+      name: { value: 'Arrowhead Core Service' },
+      tls:  { type: "tls-config", required: false },
+      usetls: {value: false},
     },
     label: function () {
       var label = this.host;
@@ -14,6 +16,29 @@
       if(this.path) label += this.path
 
       return this.name || label;
+    },
+    oneditprepare: function() {
+      function updateTLSOptions() {
+          if ($("#node-config-input-usetls").is(':checked')) {
+              $("#node-config-row-tls").show();
+          } else {
+              $("#node-config-row-tls").hide();
+          }
+      }
+      if (this.tls) {
+          $('#node-config-input-usetls').prop('checked', true);
+      } else {
+          $('#node-config-input-usetls').prop('checked', false);
+      }
+      updateTLSOptions();
+      $("#node-config-input-usetls").on("click",function() {
+          updateTLSOptions();
+      });
+    },
+    oneditsave: function() {
+        if (!$("#node-config-input-usetls").is(':checked')) {
+            $("#node-config-input-tls").val("_ADD_");
+        }
     }
   });
 </script>
@@ -45,6 +70,18 @@
         <input type="text" id="node-config-input-path" 
         data-i18n="[placeholder]ah_core_service.placeholder.path"
         data-i18n="[title]ah_core_service.placeholder.path">
+    </div>
+
+    <div class="form-row">
+      <label for="node-config-input-usetls"><i class="fa fa-shield"></i> <span data-i18n="ah_core_service.label.useTLS"></span></label>
+      <input type="checkbox" id="node-config-input-usetls" data-i18n="[title]ah_core_service.placeholder.useTLS" style="width: auto;"/>
+      <div id="node-config-row-tls" class="hide" style="box-sizing: border-box; margin-left: 2em">
+          <label for="node-config-input-tls">
+            <i class="fa fa-shield"></i>
+            <span data-i18n="ah_core_service.label.TLSConfig"></span>
+          </label>
+          <input type="text" id="node-config-input-tls">
+      </div>
     </div>
     <div class="form-row">
         <label for="node-config-input-name">

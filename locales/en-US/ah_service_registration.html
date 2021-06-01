@@ -41,7 +41,23 @@
 
     </dt>
   <h3>Outputs:</h3>
-  <p>No output.</p>
+  
+  <ol class="node-ports">
+    <li>Standard output
+      <dl class="message-properties">
+          <dt>payload <span class="property-type">object</span></dt>
+          <dd>
+            An object with the result of the registration.
+          </dd>
+          <dt>payload.result</dt>
+          <dd>"success" if everything went OK, "error" if not.</dd>
+          <dt>payload.path</dt>
+          <dd>Path of the service that has been registered (e.g. /provider)</dd>
+          <dt>payload.message</dt>
+          <dd>Registry message</dd>
+      </dl>
+    </li>
+  </ol>
   <h3>References</h3>
   <ul>
       <li>

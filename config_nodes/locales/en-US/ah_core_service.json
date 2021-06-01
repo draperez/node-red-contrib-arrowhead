@@ -1,16 +1,20 @@
 {
-  "ah_registry" : {
+  "ah_core_service" : {
     "label": {
       "host": "Host",
       "port": "Port",
       "path": "Path",
-      "name": "Node name"
+      "name": "Node name",
+      "useTLS": "Use TLS",
+      "TLSConfig": "TLS Configuration"
     },
     "placeholder": {
       "host": "Host where Arrowhead Core Service is available (e.g. https://172.17.10.219.",
       "port": "Port where Arrowhead Core Service is available (e.g. 8443).",
       "path": "Path where Arrowhead Core Service is available (e.g. /serviceregistry)",
-      "name": "Configuration node name."
+      "name": "Configuration node name.",
+      "useTLS": "Use TLS to connect with the service.",
+      "TLSConfig": "TLS Configuration to connect with the service"
     }
 
   }

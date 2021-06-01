@@ -1,11 +1,15 @@
 <script type="text/html" data-help-name="ah service discoverer">
-  <p>Calls AH Orchestrator and returns the service information for the given
-    <em>service definition</em>.
+  <p>
+    When deployed, if public key is not set, it will call 
+    <em>Arrowhead Authentication Service</em> and retrieve it.
   </p>
-  <p>It is usually followed by a <b>http request</b> node (not directly).</p>
-  <h3>Inputs</h3>
+  <p>
+    This node is usually put after an <em>http in</em> node.
+    It will validate a given token.
+  </p>
+  <!--h3>Inputs</!--h3>
     <dl class="message-properties">
-      <dt class="optional">serviceDefinition
+      <dt class="optional">token
         <span class="property-type">string</span>
       </dt>
       <dd>

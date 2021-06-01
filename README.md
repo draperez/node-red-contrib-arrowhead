@@ -10,23 +10,36 @@ There are several nodes in this repository in order to connect with ```Arrowhead
 
 This are nodes that can be drag & dropped to flows.
 
-#### 1.1.1 AH Service Endpoint
+#### 1.1.1 AH Service Registration
 
 This node is used to register a service (e.g. REST endpoint) to an ```Arrowhead Registry```.
 
 | | |
 |---|---|
-| ![Arrowhead Service Registration](./screenshots/01_ah_service_registration.png)  | ![Arrowhead Service Registration node configuration.](./screenshots/02_ah_service_registration_config.png)  |
+| ![Arrowhead Service Registration](./screenshots/ah_service_registration.png)  | ![Arrowhead Service Registration node configuration.](./screenshots/ah_service_registration_config.png)  |
 | *Arrowhead Service Registration node* | *Arrowhead Service Registration node configuration.* |
 
-#### 1.1.2 AH Service Discovery
+#### 1.1.2 AH Service Discoverer
 
 This node asks ```Arrowhead Orchestrator``` for an ```Arrowhead Service```.
 
 | | |
 |---|---|
-| ![Arrowhead Service Discoverer node](./screenshots/05_ah_service_discoverer.png) | ![Arrowhead Service Dicoverer node configuration.](./screenshots/06_ah_service_discoverer_config.png) |
+| ![Arrowhead Service Discoverer node](./screenshots/ah_service_discoverer.png) | ![Arrowhead Service Dicoverer node configuration.](./screenshots/ah_service_discoverer_config.png) |
 | *Arrowhead Service Discoverer node* | *Arrowhead Service Discoverer node configuration.*  |
+
+#### 1.1.3 AH Token Validator
+
+This node validates an *Arrowhead Token*. You must configure an *Arrowhead Authorization Service*. It will be used to download a public key on deploy. As an alternative, the public key can be directly added in the node configuration.
+
+When an input message arrives, it will validate the token in ```msg.token``` or ```msg.req.headers.authorization```.
+
+Due to the use of ```crypto.createPublicKey```, this node is not compatible with ```Node.js <= 10```.
+
+| | |
+|---|---|
+| ![Arrowhead Token Validator node.](./screenshots/ah_token_validator.png) | ![Arrowhead Token Validator node configuration.](./screenshots/ah_token_validator_config.png) |
+| *Arrowhead Token Validator node.* | *Arrowhead Token Validator node configuration.*  |
 
 ### 1.2 Configuration nodes
 
@@ -42,63 +55,28 @@ Use to stablish authentication information for arrowhead systems. This will auth
 |*Arrowhead Authentication Info. configuration node.* |
 
 
-#### 1.2.2 AH Orchestrator
+#### 1.2.2 AH Core Service
 
-Used to stablish where the ```Arrowhead Orchestrator``` can be found.
-
-| |
-|---|
-| ![Arrowhead Orchestrator configuration node.](./screenshots/07_ah_orchestrator_config.png) |
-|*Arrowhead Orchestrator configuration node.* |
-
-#### 1.2.3 AH registry
-
-Used to stablish where the ```Arrowhead Registry``` can be found.
+Used to stablish where ```Arrowhead Core Systems``` can be found (e.g. Authorization, Orchestrator, Registry...).
 
 | |
 |---|
-| ![Arrowhead Registry configuration node.](./screenshots/03_ah_registry_config.png) |
-|*Arrowhead Registry configuration node.* |
+| ![Arrowhead Core Service configuration node.](./screenshots/ah_core_service_config.png) |
+|*Arrowhead Core Service configuration node.* |
 
-#### 1.2.4 AH System
+#### 1.2.3 AH System
 
 Used to register ```Arrowhead``` systems (e.g. register NodeRed instance as a consumer).
 
 | |
 |---|
-| ![Arrowhead System configuration node.](./screenshots/04_ah_system_config.png)|
+| ![Arrowhead System configuration node.](./screenshots/ah_system_config.png)|
 | *Arrowhead System configuration node.* |
+
 
 ## 2. Under development
 
-The nodes are under development at this moment. Token validation node is missing for now.
-
-## 3. Docker image to try it from the repository
-
-You can test the module using docker and a node-red image.
-
-This commands will remove (if exists) the old container, build a new image and run a new container with ```node-red-contrib-arrowhead``` installed.
-
-- Remove old image:
-
-```console
-docker stop ah_node-red
-docker rm ah_node-red
-```
-
-- Build image:
-
-```console
-docker build --tag ah_node-red:latest .
-```
-
-- Run:
-
-```console
-docker run --publish 1880:1880 --detach --name ah_node-red ah_node-red:latest
-```
-
-- It will be abailable at [http://localhost:1880](http://localhost:1880).
+The nodes are under development at this moment. Many functionalities may be developed for specific use-cases and not fully compatible for all scenarios yet.
 
 
 ## Authoring
