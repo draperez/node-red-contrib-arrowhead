@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "axios": "0.27.2",
-    "node-jose": "2.1.1"
+    "node-jose": "2.2.0"
   },
   "keywords": [
     "arrowhead",
