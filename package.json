@@ -4,10 +4,10 @@
   "description": "Node-red node for arrowhead framework.",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/draperez/node-red-contrib-arrowhead.git"
+    "url": "git+https://github.com/mu-sse/node-red-contrib-arrowhead.git"
   },
   "dependencies": {
-    "axios": "0.27.2",
+    "axios": "^0.27.2",
     "node-jose": "2.2.0"
   },
   "keywords": [
@@ -17,9 +17,9 @@
   "author": "Mondragon Unibertsitatea",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/draperez/node-red-contrib-arrowhead/issues"
+    "url": "https://github.com/mu-sse/node-red-contrib-arrowhead/issues"
   },
-  "homepage": "https://github.com/draperez/node-red-contrib-arrowhead#readme",
+  "homepage": "https://github.com/mu-sse/node-red-contrib-arrowhead#readme",
   "node-red": {
     "nodes": {
       "ah system": "config_nodes/ah_system.js",
