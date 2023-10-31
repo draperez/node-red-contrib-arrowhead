@@ -26,6 +26,13 @@ jobs:
         run: npm ci
 
       - name: Code Linting
-        run: npm run lint
+        run: npm run lint > lint.log
+
+      - name: Archive lint artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: lint-artifact.log
+          path: lint.log
+          retention-days: 30
 
       - run: echo "🍏 This job's status is ${{ job.status }}."
