@@ -26,16 +26,16 @@ jobs:
         run: npm ci
       
       - name: Code Linting
-        run: npm run lint > lint.log
+        run: npm run lint
         continue-on-error: true  # If we want the job appear as succeded.
 
-      - name: Archive lint artifact
-        # if: ${{ always() }}
-        uses: actions/upload-artifact@v3
-        with:
-          name: eslintreport.json
-          path: eslintreport.json
-          retention-days: 30
+#      - name: Archive lint artifact
+#        # if: ${{ always() }}
+#        uses: actions/upload-artifact@v3
+#        with:
+#          name: eslintreport.json
+#          path: eslintreport.json
+#          retention-days: 30
 
       - name: Annotate Code Linting Results
         uses: ataylorme/eslint-annotate-action@v2
