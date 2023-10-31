@@ -47,7 +47,7 @@ jobs:
       - name: Run ESLint Reporter Action (using JSON file)
         uses: rahmanrafi/eslint-reporter-action@v1
         with:
-          json: ./eslintreport.json
+          eslint-json: ./eslintreport.json
           title: ESLint Report
 
       - run: echo "🍏 This job's status is ${{ job.status }}."
