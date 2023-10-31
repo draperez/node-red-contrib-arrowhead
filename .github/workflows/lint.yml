@@ -32,7 +32,6 @@ jobs:
 #          prettier: true
       - name: Code Linting
         run: npm run lint > lint.log
-        continue-on-error: true
 
       - name: Warning if lint errors
         if: ${{ failure() }}
