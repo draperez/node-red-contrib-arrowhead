@@ -30,7 +30,6 @@ jobs:
         with:
           eslint: true
           prettier: true
-
 #      - name: Code Linting
 #        run: npm run lint > lint.log
 #        continue-on-error: true
@@ -48,4 +47,3 @@ jobs:
 #          retention-days: 30
 #
 #      - run: echo "🍏 This job's status is ${{ job.status }}."
-#
