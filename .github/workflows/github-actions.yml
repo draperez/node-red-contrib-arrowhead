@@ -1,9 +1,13 @@
 name: Publish NPM
 run-name: ${{ github.actor }} is publishing node-red-contribu-arrowhead to NPM using GitHub Actions 🚀
-on: [push]
+on:
+  push:
+    branches: [main, master]
 jobs:
   Publish-NPM-Package-With-GitHub-Actions:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
+    container:
+      image: node:18
     steps:
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
       - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
@@ -17,7 +21,7 @@ jobs:
           ls ${{ github.workspace }}
       - uses: actions/setup-node@v3
         with:
-          node-version: '16.x'
+          node-version: '18.x'
           registry-url: 'https://registry.npmjs.org'
       # Update the version & push (if you're not doing that elsewhere) => No permissions?
       # - name: Update version & push
