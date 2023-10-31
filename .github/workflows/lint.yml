@@ -3,15 +3,6 @@
 name: Lint
 run-name: ${{ github.actor }} is linting node-red-contribu-arrowhead using GitHub Actions 🚀
 
-github-token:
-  action-input:
-    input: repo-token
-  permissions:
-    checks: write
-    checks-reason: to create checks
-    pull-requests: read
-    pull-requests-reason: to get changed PR files
-
 on:
   push:
     branches: [main, master]
@@ -41,18 +32,17 @@ jobs:
         continue-on-error: true  # If we want the job appear as succeded.
 
       - name: Archive lint artifact
-        # if: ${{ always() }}
+        if: ${{ always() }}
         uses: actions/upload-artifact@v3
         with:
           name: eslintreport.json
           path: eslintreport.json
           retention-days: 30
 
-      - name: Annotate Code Linting Results
-        uses: ataylorme/eslint-annotate-action@v2
-        # if: ${{ github.actor != 'dependabot[bot]' }} # dependabot doesn't have permissions
-        with:
-          repo-token: "${{ secrets.GITHUB_TOKEN }}"
-          report-json: "eslint_report.json"
+      #- name: Annotate Code Linting Results  # Not working
+      #  uses: ataylorme/eslint-annotate-action@v2
+      #  with:
+      #    repo-token: "${{ secrets.GITHUB_TOKEN }}"
+      #    report-json: "eslint_report.json"
 
       - run: echo "🍏 This job's status is ${{ job.status }}."
