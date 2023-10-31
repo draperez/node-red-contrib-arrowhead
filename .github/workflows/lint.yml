@@ -44,5 +44,10 @@ jobs:
       #  with:
       #    repo-token: "${{ secrets.GITHUB_TOKEN }}"
       #    report-json: "eslint_report.json"
+      - name: Run ESLint Reporter Action (using JSON file)
+        uses: rahmanrafi/eslint-reporter-action@v1
+        with:
+          json: ./eslintreport.json
+          title: ESLint Report
 
       - run: echo "🍏 This job's status is ${{ job.status }}."
