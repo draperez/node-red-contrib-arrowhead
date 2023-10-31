@@ -27,9 +27,10 @@ jobs:
 
       - name: Code Linting
         run: npm run lint > lint.log
-        continue-on-error: true
+      #  continue-on-error: true
 
       - name: Archive lint artifact
+        if: ${{ always() }}
         uses: actions/upload-artifact@v3
         with:
           name: lint-artifact.log
