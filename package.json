@@ -29,5 +29,12 @@
       "ah service discoverer": "ah_service_discoverer.js",
       "ah token validator": "ah_token_validator.js"
     }
+  },
+  "devDependencies": {
+    "eslint": "8.52.0"
+  },
+  "scripts": {
+    "lint:js": "eslint *.js",
+    "lint": "npm run lint:js"
   }
 }

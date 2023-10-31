@@ -1,10 +1,21 @@
+# Interesting video: https://youtu.be/yfBtjLxn_6k?si=pUa21S1yIYHcvzwt
+
 name: Publish NPM
 run-name: ${{ github.actor }} is publishing node-red-contribu-arrowhead to NPM using GitHub Actions 🚀
 on:
+
+# You can execute a job when pushed:
 #  push:
 #    branches: [main, master]
+
+# You can execute jobs using a cron:
+#  schedule:
+#    - cron:  '0 0 * * 0'
+
+# You can execute a job when a new release is created.
   release:
     types: [created]
+
 jobs:
   Publish-NPM-Package-With-GitHub-Actions:
     runs-on: self-hosted
