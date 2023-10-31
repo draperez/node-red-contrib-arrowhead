@@ -3,6 +3,15 @@
 name: Lint
 run-name: ${{ github.actor }} is linting node-red-contribu-arrowhead using GitHub Actions 🚀
 
+github-token:
+  action-input:
+    input: repo-token
+  permissions:
+    checks: write
+    checks-reason: to create checks
+    pull-requests: read
+    pull-requests-reason: to get changed PR files
+
 on:
   push:
     branches: [main, master]
