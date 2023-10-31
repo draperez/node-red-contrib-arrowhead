@@ -41,8 +41,9 @@ jobs:
 
       - name: Annotate Code Linting Results
         uses: ataylorme/eslint-annotate-action@v2
-        if: ${{ github.actor != 'dependabot[bot]' }} # dependabot doesn't have permissions
+        # if: ${{ github.actor != 'dependabot[bot]' }} # dependabot doesn't have permissions
         with:
+          repo-token: "${{ secrets.GITHUB_TOKEN }}"
           report-json: "eslint_report.json"
 
       - run: echo "🍏 This job's status is ${{ job.status }}."
