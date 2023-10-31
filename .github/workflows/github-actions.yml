@@ -1,0 +1,36 @@
+name: Publish NPM
+run-name: ${{ github.actor }} is publishing node-red-contribu-arrowhead to NPM using GitHub Actions 🚀
+on: [push]
+jobs:
+  Publish-NPM-Package-With-GitHub-Actions:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
+      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
+      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
+      - name: Check out repository code
+        uses: actions/checkout@v4
+      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
+      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
+      - name: List files in the repository
+        run: |
+          ls ${{ github.workspace }}
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '16.x'
+          registry-url: 'https://registry.npmjs.org'
+      # Update the version & push (if you're not doing that elsewhere)
+      - name: Update version & push
+        run: |
+          git config --global user.name 'Automated publish'
+          git config --global user.email '$YOUR_USERNAME@users.noreply.github.com'
+
+          # Update the version in package.json, and commit & tag the change:
+          npm version patch # YMMV - you might want the semver level as a workflow input
+
+          git push && git push --tags
+      # Publish to NPM
+      - run: npm publish
+        env:
+          NODE_AUTH_TOKEN: ${{secrets.NPM_PUBLISH_TOKEN}}
+      - run: echo "🍏 This job's status is ${{ job.status }}."
