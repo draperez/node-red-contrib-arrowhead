@@ -1,8 +1,10 @@
 name: Publish NPM
 run-name: ${{ github.actor }} is publishing node-red-contribu-arrowhead to NPM using GitHub Actions 🚀
 on:
-  push:
-    branches: [main, master]
+#  push:
+#    branches: [main, master]
+  release:
+    types: [created]
 jobs:
   Publish-NPM-Package-With-GitHub-Actions:
     runs-on: self-hosted
