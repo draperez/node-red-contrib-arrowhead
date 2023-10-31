@@ -24,17 +24,28 @@ jobs:
 
       - name: Install Dependencies
         run: npm ci
-
-      - name: Code Linting
-        run: npm run lint > lint.log
-      #  continue-on-error: true
-
-      - name: Archive lint artifact
-        if: ${{ always() }}
-        uses: actions/upload-artifact@v3
+      
+      - name: Run linters
+        uses: wearerequired/lint-action@v2
         with:
-          name: lint-artifact.log
-          path: lint.log
-          retention-days: 30
+          eslint: true
+          prettier: true
 
-      - run: echo "🍏 This job's status is ${{ job.status }}."
+#      - name: Code Linting
+#        run: npm run lint > lint.log
+#        continue-on-error: true
+#
+#      - name: Warning if lint errors
+#        if: ${{ error() }}
+#        run: echo "::warning Lint issues detected"
+#
+#      - name: Archive lint artifact
+#        if: ${{ always() }}
+#        uses: actions/upload-artifact@v3
+#        with:
+#          name: lint-artifact.log
+#          path: lint.log
+#          retention-days: 30
+#
+#      - run: echo "🍏 This job's status is ${{ job.status }}."
+#
